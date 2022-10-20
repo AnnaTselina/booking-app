@@ -1,0 +1,23 @@
+{
+  "name": "booking-app",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "lint": "npm run lint --prefix server",
+    "format": "npm run format --prefix server",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.(ts)": [
+      "npm run lint && npm run format"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": ""
+}

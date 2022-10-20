@@ -1,0 +1,105 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type RentalUnitImage {
+  id: String!
+  image_path: String!
+  rental_unit: RentalUnit!
+}
+
+type TypeOfPlace {
+  id: String!
+  name: String!
+  rental_units: [RentalUnit!]
+}
+
+type Amenity {
+  id: String!
+  name: String!
+  rental_unit_amenities: [RentalUnitAmenity!]
+}
+
+type RentalUnitAmenity {
+  id: String!
+  rental_unit: RentalUnit!
+  amenity: Amenity!
+}
+
+type Country {
+  id: String!
+  name: String!
+  has_states: Boolean!
+  states: [State!]
+  rental_units_adresses: [RentalUnitAddress!]!
+}
+
+type State {
+  id: String!
+  country: Country!
+  name: String
+  rental_units_adresses: [RentalUnitAddress!]!
+}
+
+type RentalUnitAddress {
+  id: String!
+  city: String!
+  zip: String!
+  street: String!
+  apartment: String!
+  state: State
+  country: Country
+}
+
+type Booking {
+  id: String!
+  num_guests: Int!
+  start_date: DateTime!
+  end_date: DateTime!
+  status: String!
+  rental_unit: RentalUnit!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+type RentalUnit {
+  id: String!
+  max_guests: Int!
+  num_bedrooms: Int!
+  num_beds: Int!
+  num_bathrooms: Int!
+  title: String!
+  description: String!
+  price: Float!
+  total_rating: Float
+  type_of_place: TypeOfPlace!
+  amenities: [RentalUnitAmenity!]
+  images: [RentalUnitImage!]
+  address: RentalUnitAddress!
+  bookings: [Booking!]!
+}
+
+type Query {
+  getRentalUnits(getRentalUnitsInput: GetRentalUnitsInput!): [RentalUnit!]!
+  getRentalUnit(id: String!): RentalUnit
+}
+
+input GetRentalUnitsInput {
+  destination: String
+  checkin: String
+  checkout: String
+}
+
+type Mutation {
+  reserveRentalUnit(reserveRentalUnitInput: ReserveRentalUnitInput!): Booking!
+}
+
+input ReserveRentalUnitInput {
+  id_rental_unit: String!
+  num_guests: Int!
+  start_date: DateTime!
+  end_date: DateTime!
+}
