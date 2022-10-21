@@ -16,7 +16,7 @@ import modules from "./modules/modules";
       envFilePath: join(__dirname, "..", ".env"),
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, "..", "public"),
+      rootPath: join(__dirname, "..", "..", "_public"),
       exclude: [`${process.env["GRAPHQL_PATH"]}`],
     }),
     GraphQLModule.forRoot({
