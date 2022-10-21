@@ -1,0 +1,117 @@
+@import "./fonts/fontfaces.scss";
+@import "./vars.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  &:before {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: "icomoon" !important;
+    font-size: inherit;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    vertical-align: middle;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+  }
+}
+
+.icon-cancel {
+  &:before {
+    content: $icon-cancel;
+  }
+}
+
+.icon-pin-circle {
+  &:before {
+    content: $icon-pin-circle;
+  }
+}
+
+.icon-calendar {
+  &:before {
+    content: $icon-calendar;
+  }
+}
+
+.icon-person {
+  &:before {
+    content: $icon-person;
+  }
+}
+
+.icon-star-full {
+  &:before {
+    content: $icon-star-full;
+  }
+}
+
+.icon-loading {
+  animation: spinner 1.1s linear infinite;
+  border: 0.3em solid hsla(0deg, 0%, 6%, 0.2);
+  border-left-color: #fff;
+  border-radius: 50%;
+  display: inline-block;
+  font-size: 11px;
+  height: 1em;
+  transform: translate(-50%, -50%);
+  width: 1em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 100;
+}
+
+a {
+  color: unset;
+  text-decoration: none;
+}
+
+p,
+button {
+  &.small {
+    font-size: 12px;
+  }
+}
+
+button {
+  &.link {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes appearing {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

@@ -34,11 +34,19 @@ module.exports = {
           jsx: "never",
           tsx: "never",
           js: "never",
+          ts: "never",
         },
       },
     ],
     "comma-dangle": "off",
     "@typescript-eslint/comma-dangle": "off",
     "@typescript-eslint/no-explicit-any": "error",
+    "react/function-component-definition": [
+      2,
+      {
+        namedComponents: "arrow-function",
+        unnamedComponents: "arrow-function",
+      },
+    ],
   },
 };
