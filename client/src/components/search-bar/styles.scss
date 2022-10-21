@@ -1,0 +1,51 @@
+@import "../../styles/vars.scss";
+
+.search-bar {
+  display: flex;
+  padding: 15px;
+  background-color: $colorMin;
+  border-radius: 2px;
+
+  &.absolute-centered {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  }
+
+  &-item {
+    padding: 5px 20px;
+    position: relative;
+
+    &:not(:last-of-type) {
+      border-right: 1px solid $colorGrey;
+    }
+
+    input {
+      padding: 7px 14px 7px 32px;
+      font-family: $font2;
+      border: none;
+      outline: none;
+      text-align: center;
+    }
+
+    &__input-date {
+      width: 110px;
+    }
+
+    > button {
+      padding: 9px 24px;
+      background-color: $secondaryButtonColor;
+      border: none;
+      font-family: $font2;
+      cursor: pointer;
+    }
+
+    .input-icon {
+      position: absolute;
+      z-index: 1;
+      transform: translate(8px, 5px);
+      opacity: 0.6;
+    }
+  }
+}

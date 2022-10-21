@@ -2,6 +2,7 @@ import ImageBannerBig from "../../components/image-banner-big";
 import bannerImage from "../../assets/images/furniture.jpg";
 import mediumBannerImage from "../../assets/images/villa.jpg";
 import ImageBannerMedium from "../../components/image-banner-medium";
+import SearchBar from "../../components/search-bar";
 
 const HomePageContainer = () => (
   <>
@@ -10,6 +11,7 @@ const HomePageContainer = () => (
       bannerHeading="Your adventure starts here"
       bannerSubheading="Book your apartment for best experience"
     />
+    <SearchBar className="absolute-centered" />
     <ImageBannerMedium
       imagePath={mediumBannerImage}
       imageAlt="Beach view image"
