@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.7.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -10,6 +11,7 @@
     "@types/node": "^16.11.68",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
+    "apollo-upload-client": "^17.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "react": "^18.2.0",
     "react-datepicker": "^4.8.0",
@@ -45,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@types/apollo-upload-client": "^17.0.2",
     "@types/node-sass": "^4.11.3",
     "@types/react-datepicker": "^4.4.2",
     "@typescript-eslint/eslint-plugin": "^5.40.1",

@@ -23,6 +23,10 @@
   }
 }
 
+body {
+  font-family: $font2;
+}
+
 .icon-cancel {
   &:before {
     content: $icon-cancel;

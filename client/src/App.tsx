@@ -1,18 +1,22 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ApolloProvider } from "@apollo/client";
 import routes from "./utils/routes";
 import "./styles/main.scss";
 import Header from "./components/header";
 import HomePageContainer from "./page-containers/home";
+import SearchPageContainer from "./page-containers/search";
+import client from "./apollo-client";
 
 const App = () => (
-  <div className="App">
+  <ApolloProvider client={client}>
     <BrowserRouter>
       <Header />
       <Routes>
         <Route path={routes.HOME} element={<HomePageContainer />} />
+        <Route path={routes.SEARCH} element={<SearchPageContainer />} />
       </Routes>
     </BrowserRouter>
-  </div>
+  </ApolloProvider>
 );
 
 export default App;
