@@ -1,0 +1,27 @@
+@import "../../styles/vars.scss";
+
+.logo {
+  display: inline-block;
+  font-family: $font2;
+  text-transform: uppercase;
+  font-size: 28px;
+  line-height: 28px;
+
+  &-link {
+    color: black;
+  }
+}
+
+header {
+  position: sticky;
+  width: 100%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  height: 6vh;
+  padding: 9px 28px;
+  background-color: $colorMin;
+  border-bottom: 1px solid $colorGrey;
+}
