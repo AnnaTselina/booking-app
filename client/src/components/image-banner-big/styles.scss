@@ -1,0 +1,35 @@
+@import "../../styles/vars.scss";
+
+.image-banner-big {
+  height: 110vh;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__headings {
+    position: absolute;
+    top: 40%;
+    max-width: 30%;
+  }
+
+  &__heading {
+    font-family: $font1;
+    color: $colorMin;
+    text-align: center;
+    font-size: 72px;
+  }
+
+  &__subheading {
+    font-family: $font2;
+    color: $colorMin;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 14px;
+  }
+}

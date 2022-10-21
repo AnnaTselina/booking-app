@@ -1,0 +1,52 @@
+@import "../../styles/vars.scss";
+
+.image-banner-medium {
+  background-color: $colorMin;
+  max-width: 1000px;
+  margin: 110px auto 80px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 28px;
+
+  &__image-container {
+    img {
+      width: 400px;
+    }
+  }
+
+  &__secondary-texts {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      &:last-of-type {
+        flex-basis: 60%;
+      }
+    }
+  }
+
+  &__line {
+    flex-basis: 20%;
+    height: 1px;
+    background-color: black;
+    margin-top: 20px;
+  }
+
+  &__heading {
+    font-family: $font1;
+    color: $headingPrimaryColor;
+    font-weight: 100;
+    margin-bottom: 80px;
+  }
+
+  &__subheading {
+    font-family: $font2;
+    color: $headingPrimaryColor;
+    margin-bottom: 40px;
+  }
+
+  &__text {
+    font-family: $font2;
+    color: $headingPrimaryColor;
+  }
+}
