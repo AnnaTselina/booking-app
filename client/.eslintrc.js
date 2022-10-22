@@ -28,14 +28,12 @@ module.exports = {
     "react/jsx-filename-extension": [1, { extensions: [".ts", ".tsx"] }],
     "import/extensions": [
       "error",
-      "always",
+      "ignorePackages",
       {
-        pattern: {
-          jsx: "never",
-          tsx: "never",
-          js: "never",
-          ts: "never",
-        },
+        js: "never",
+        jsx: "never",
+        ts: "never",
+        tsx: "never",
       },
     ],
     "comma-dangle": "off",

@@ -6,6 +6,7 @@ import Header from "./components/header";
 import HomePageContainer from "./page-containers/home";
 import SearchPageContainer from "./page-containers/search";
 import client from "./apollo-client";
+import Apartment from "./components/apartment";
 
 const App = () => (
   <ApolloProvider client={client}>
@@ -15,6 +16,9 @@ const App = () => (
         <Routes>
           <Route path={routes.HOME} element={<HomePageContainer />} />
           <Route path={routes.SEARCH} element={<SearchPageContainer />} />
+          <Route path={routes.APARTMENT}>
+            <Route path=":id" element={<Apartment />} />
+          </Route>
         </Routes>
       </div>
     </BrowserRouter>

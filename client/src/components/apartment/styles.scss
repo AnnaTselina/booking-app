@@ -1,0 +1,129 @@
+@import "../../styles/vars.scss";
+
+.apartment {
+  width: 100%;
+  display: flex;
+
+  &.centered {
+    justify-content: center;
+  }
+
+  &-container {
+    font-family: $font2;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &__no-results {
+    margin-top: 30px;
+  }
+
+  &-content {
+    width: 100%;
+  }
+
+  &__image-slider {
+    width: 100%;
+    height: 70vh;
+    cursor: pointer;
+  }
+  &__info {
+    padding: 0 28px;
+    max-width: 1320px;
+    margin: 40px auto;
+    display: flex;
+
+    & > div:first-child {
+      flex-basis: 70%;
+      padding-right: 32px;
+    }
+    & > div:last-child {
+      flex-basis: 30%;
+    }
+
+    &-type {
+      margin: 28px 0;
+      color: $darkGrey;
+    }
+
+    &-amenities {
+      margin-top: 40px;
+
+      h2 {
+        margin-bottom: 14px;
+      }
+
+      ul {
+        list-style: none;
+        columns: 2;
+        -webkit-columns: 2;
+        -moz-columns: 2;
+
+        li {
+          width: 50%;
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    &-numbers {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 40px;
+
+      &-item {
+        flex-basis: 50%;
+        font-size: 24px;
+        margin-bottom: 18px;
+        display: flex;
+
+        div {
+          display: inline-block;
+
+          &:first-of-type {
+            flex-basis: 60%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  --swiper-theme-color: rgb(167, 163, 163);
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+}
+
+.swiper-slide img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.swiper-button-prev {
+  left: 28px;
+}
+.swiper-button-next {
+  right: 28px;
+}

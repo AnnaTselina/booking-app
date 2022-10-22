@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client";
 
-// eslint-disable-next-line import/prefer-default-export
 export const GET_RENTAL_UNITS = gql`
   query GetRentalUnits($destination: String) {
     getRentalUnits(getRentalUnitsInput: { destination: $destination }) {
@@ -22,6 +21,51 @@ export const GET_RENTAL_UNITS = gql`
       address {
         city
         country {
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const GET_RENTAL_UNIT = gql`
+  query GetRentalUnit($id: String!) {
+    getRentalUnit(id: $id) {
+      id
+      max_guests
+      num_bedrooms
+      num_beds
+      num_bathrooms
+      title
+      description
+      price
+      total_rating
+      type_of_place {
+        id
+        name
+      }
+      images {
+        id
+        image_path
+      }
+      address {
+        id
+        city
+        zip
+        street
+        apartment
+        state {
+          id
+          name
+        }
+        country {
+          id
+          name
+        }
+      }
+      amenities {
+        amenity {
+          id
           name
         }
       }
