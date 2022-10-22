@@ -19,11 +19,17 @@ const SearchPageContainer = () => {
 
         const params = new URLSearchParams(search);
         const destination = params.get("destination");
-
+        const checkIn = params.get("checkin");
+        const checkOut = params.get("checkout");
         const variables: { [key: string]: string } = {};
 
         if (destination) {
           variables.destination = destination;
+        }
+
+        if (checkIn && checkOut) {
+          variables.checkIn = checkIn;
+          variables.checkOut = checkOut;
         }
 
         getRentalUnits({

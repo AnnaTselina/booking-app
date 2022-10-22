@@ -105,7 +105,13 @@ const Apartment = () => {
                     )}
                   </div>
                 </div>
-                <BookPanel maxGuests={rentalUnit.max_guests} pricePerNight={rentalUnit.price} />
+                {apartmentId.current && (
+                  <BookPanel
+                    maxGuests={rentalUnit.max_guests}
+                    pricePerNight={rentalUnit.price}
+                    idRentalUnit={apartmentId.current}
+                  />
+                )}
               </div>
             </div>
           ) : (

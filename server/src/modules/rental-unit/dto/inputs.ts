@@ -1,5 +1,4 @@
 import { Field, Float, InputType, Int } from "@nestjs/graphql";
-import { GraphQLDateTime } from "graphql-scalars";
 import {
   Validate,
   ValidationArguments,
@@ -33,7 +32,7 @@ export class ReserveRentalUnitInput {
   @IsNotEmpty()
   num_guests: number;
 
-  @Field(() => GraphQLDateTime)
+  @Field(() => String)
   @IsNotEmpty()
   @Validate(IsBeforeConstraint, ["end_date"])
   start_date: Date;
@@ -44,7 +43,7 @@ export class ReserveRentalUnitInput {
   @Min(1)
   total_price: number;
 
-  @Field(() => GraphQLDateTime)
+  @Field(() => String)
   @IsNotEmpty()
   end_date: Date;
 }

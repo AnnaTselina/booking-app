@@ -43,6 +43,14 @@
     &__price-calculations {
       width: 100%;
 
+      tr {
+        height: 40px;
+
+        &.passive {
+          color: $darkGrey;
+        }
+      }
+
       td {
         &:last-of-type {
           text-align: end;

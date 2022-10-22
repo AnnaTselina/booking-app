@@ -1,8 +1,10 @@
 import { gql } from "@apollo/client";
 
 export const GET_RENTAL_UNITS = gql`
-  query GetRentalUnits($destination: String) {
-    getRentalUnits(getRentalUnitsInput: { destination: $destination }) {
+  query GetRentalUnits($destination: String, $checkIn: String, $checkOut: String) {
+    getRentalUnits(
+      getRentalUnitsInput: { destination: $destination, checkin: $checkIn, checkout: $checkOut }
+    ) {
       id
       title
       price
@@ -69,6 +71,28 @@ export const GET_RENTAL_UNIT = gql`
           name
         }
       }
+    }
+  }
+`;
+
+export const RESERVE_RENTAL_UNIT_MUTATION = gql`
+  mutation ReserveRentalunit(
+    $idRentalUnit: String!
+    $numGuests: Int!
+    $totalPrice: Float!
+    $startDate: String!
+    $endDate: String!
+  ) {
+    reserveRentalUnit(
+      reserveRentalUnitInput: {
+        id_rental_unit: $idRentalUnit
+        num_guests: $numGuests
+        total_price: $totalPrice
+        start_date: $startDate
+        end_date: $endDate
+      }
+    ) {
+      id
     }
   }
 `;

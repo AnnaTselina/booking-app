@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
+import React, { useMemo, useState } from "react";
+import { RESERVE_RENTAL_UNIT_MUTATION } from "../../queries-graphql";
+import parseDate from "../../utils/helpers";
 import DateRangePicker from "../date-range-pickers";
 import "./styles.scss";
 
 interface IBookPanel {
   maxGuests: number;
   pricePerNight: number;
+  idRentalUnit: string;
 }
 
 const BookPanel = (props: IBookPanel) => {
-  const { maxGuests, pricePerNight } = props;
+  const { maxGuests, pricePerNight, idRentalUnit } = props;
 
   const [dates, setDates] = useState<{ checkIn: Date | null; checkOut: Date | null }>({
     checkIn: null,
@@ -16,6 +20,25 @@ const BookPanel = (props: IBookPanel) => {
   });
 
   const [numGuests, setNumGuests] = useState(1);
+
+  const [reserveRentalUnit] = useMutation(RESERVE_RENTAL_UNIT_MUTATION);
+
+  const totalNights = useMemo(() => {
+    if (dates.checkIn && dates.checkOut) {
+      const difference = dates.checkOut.getTime() - dates.checkIn.getTime();
+      const totalDays = Math.ceil(difference / (1000 * 3600 * 24));
+      return totalDays;
+    }
+    return 0;
+  }, [dates]);
+
+  const totalPrice = useMemo(() => {
+    if (totalNights && pricePerNight) {
+      return totalNights * pricePerNight;
+    }
+
+    return 0;
+  }, [totalNights, pricePerNight]);
 
   const handleNumGuestsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (Number(e.target.value)) {
@@ -29,9 +52,25 @@ const BookPanel = (props: IBookPanel) => {
     }
   };
 
+  const reserve = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+
+    if (dates.checkIn && dates.checkOut && numGuests && totalNights && totalPrice) {
+      reserveRentalUnit({
+        variables: {
+          idRentalUnit,
+          numGuests,
+          totalPrice,
+          startDate: parseDate(dates.checkIn),
+          endDate: parseDate(dates.checkOut),
+        },
+      });
+    }
+  };
+
   return (
     <div className="bookpanel-container">
-      <form>
+      <form onSubmit={reserve}>
         <div className="bookpanel-box">
           <DateRangePicker
             setDatesCallback={setDates}
@@ -60,6 +99,23 @@ const BookPanel = (props: IBookPanel) => {
                   <b>${pricePerNight}</b>
                 </td>
               </tr>
+              <tr className={totalNights ? "" : "passive"}>
+                <td>
+                  <b>Total nights:</b>
+                </td>
+                <td>
+                  <b>{totalNights}</b>
+                </td>
+              </tr>
+
+              <tr className={totalNights ? "" : "passive"}>
+                <td>
+                  <b>Total price:</b>
+                </td>
+                <td>
+                  <b>${totalPrice}</b>
+                </td>
+              </tr>
             </tbody>
           </table>
 
@@ -67,6 +123,7 @@ const BookPanel = (props: IBookPanel) => {
             type="submit"
             className="bookpanel-box__submit"
             disabled={!dates.checkIn || !dates.checkOut || !numGuests}
+            onClick={reserve}
           >
             Reserve
           </button>

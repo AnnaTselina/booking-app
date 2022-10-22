@@ -101,7 +101,7 @@ type Mutation {
 input ReserveRentalUnitInput {
   id_rental_unit: String!
   num_guests: Int!
-  start_date: DateTime!
+  start_date: String!
   total_price: Float!
-  end_date: DateTime!
+  end_date: String!
 }
