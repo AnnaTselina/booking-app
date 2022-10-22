@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { ObjectType, Field, Int, Float } from "@nestjs/graphql";
 import { GraphQLDateTime } from "graphql-scalars";
 import { RentalUnit } from "src/modules/rental-unit/entities/rental-unit.entity";
 
@@ -25,6 +25,10 @@ export class Booking {
   @Column({ default: "request" })
   @Field()
   status: string;
+
+  @Column({ type: "float" })
+  @Field(() => Float)
+  total_price: number;
 
   @ManyToOne(() => RentalUnit, (rentalUnit) => rentalUnit.bookings)
   @Field(() => RentalUnit)

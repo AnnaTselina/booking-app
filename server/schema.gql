@@ -57,6 +57,7 @@ type Booking {
   start_date: DateTime!
   end_date: DateTime!
   status: String!
+  total_price: Float!
   rental_unit: RentalUnit!
 }
 
@@ -101,5 +102,6 @@ input ReserveRentalUnitInput {
   id_rental_unit: String!
   num_guests: Int!
   start_date: DateTime!
+  total_price: Float!
   end_date: DateTime!
 }

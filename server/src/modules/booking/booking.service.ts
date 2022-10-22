@@ -15,12 +15,14 @@ export class BookingService {
     start: Date,
     end: Date,
     guests: number,
+    totalPrice: number,
     rentalUnit: RentalUnit,
   ) {
     const newBooking = this.bookingRepository.create({
       num_guests: guests,
       start_date: start,
       end_date: end,
+      total_price: totalPrice,
       rental_unit: rentalUnit,
     });
 

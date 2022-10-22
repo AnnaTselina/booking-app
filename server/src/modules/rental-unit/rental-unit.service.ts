@@ -137,6 +137,7 @@ export class RentalUnitService {
       reserveRentalUnitInput.start_date,
       reserveRentalUnitInput.end_date,
       reserveRentalUnitInput.num_guests,
+      reserveRentalUnitInput.total_price,
       rentalUnit,
     );
 
