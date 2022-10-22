@@ -8,10 +8,11 @@ interface IDateRangePicker {
   setDatesCallback?: React.Dispatch<
     React.SetStateAction<{ checkIn: Date | null; checkOut: null | Date }>
   >;
+  clearButton?: boolean;
 }
 
 const DateRangePicker = (props: IDateRangePicker) => {
-  const { inputWrapperClass, setDatesCallback } = props;
+  const { inputWrapperClass, setDatesCallback, clearButton } = props;
 
   const [startDate, setStartDate] = useState<null | Date>(null);
   const [endDate, setEndDate] = useState<null | Date>(null);
@@ -40,37 +41,54 @@ const DateRangePicker = (props: IDateRangePicker) => {
     }
   };
 
+  const handleClearButton = () => {
+    setStartDate(null);
+    setEndDate(null);
+    minCheckOutDate.current = getNextDay(new Date());
+    if (setDatesCallback) {
+      setDatesCallback({ checkIn: null, checkOut: null });
+    }
+  };
+
   return (
     <>
-      <div className={`date-pickers ${inputWrapperClass}`}>
-        <span className="icon-calendar input-icon" />
-        <DatePicker
-          dateFormat="dd/MM/yyyy"
-          selected={startDate}
-          onChange={handleCheckInDate}
-          selectsStart
-          startDate={startDate}
-          endDate={endDate}
-          placeholderText="Check-in"
-          calendarClassName="date-pickers-inputs"
-          minDate={today.current}
-        />
+      <div className="date-pickers-wrapper">
+        <div className={`date-pickers-item ${inputWrapperClass}`}>
+          <span className="icon-calendar input-icon" />
+          <DatePicker
+            dateFormat="dd/MM/yyyy"
+            selected={startDate}
+            onChange={handleCheckInDate}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Check-in"
+            calendarClassName="date-pickers-inputs"
+            minDate={today.current}
+          />
+        </div>
+
+        <div className={`date-pickers-item ${inputWrapperClass}`}>
+          <span className="icon-calendar input-icon" />
+          <DatePicker
+            dateFormat="dd/MM/yyyy"
+            selected={endDate}
+            onChange={handleCheckOutDate}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Check-out"
+            calendarClassName="date-pickers-inputs"
+            minDate={minCheckOutDate.current}
+          />
+        </div>
       </div>
 
-      <div className={inputWrapperClass}>
-        <span className="icon-calendar input-icon" />
-        <DatePicker
-          dateFormat="dd/MM/yyyy"
-          selected={endDate}
-          onChange={handleCheckOutDate}
-          selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          placeholderText="Check-out"
-          calendarClassName="date-pickers-inputs"
-          minDate={minCheckOutDate.current}
-        />
-      </div>
+      {clearButton && (
+        <button type="button" className="clear-button" onClick={handleClearButton}>
+          Clear
+        </button>
+      )}
     </>
   );
 };
@@ -78,6 +96,7 @@ const DateRangePicker = (props: IDateRangePicker) => {
 DateRangePicker.defaultProps = {
   inputWrapperClass: "",
   setDatesCallback: () => {},
+  clearButton: false,
 };
 
 export default DateRangePicker;

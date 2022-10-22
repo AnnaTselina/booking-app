@@ -12,6 +12,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import SERVER_ROUTE from "../../utils/constants";
+import BookPanel from "../book-panel";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -104,7 +105,7 @@ const Apartment = () => {
                     )}
                   </div>
                 </div>
-                <div>Book panel</div>
+                <BookPanel maxGuests={rentalUnit.max_guests} pricePerNight={rentalUnit.price} />
               </div>
             </div>
           ) : (

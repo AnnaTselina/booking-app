@@ -1,0 +1,77 @@
+@import "../../styles/vars.scss";
+
+.bookpanel {
+  &-box {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 15px;
+    font-family: "messina_sans";
+
+    .clear-button {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      color: $darkGrey;
+      font-family: "messina_sans";
+      margin-right: 14px;
+      margin-left: calc(100% - 44px);
+    }
+
+    &__num-guests {
+      margin-bottom: 12px;
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      input {
+        padding: 7px 14px 7px 32px;
+        border: 1px solid $colorGrey;
+        outline: none;
+        width: 110px;
+        cursor: pointer;
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 2px;
+        font-family: "messina_sans";
+        text-align: center;
+        font-size: 16px;
+      }
+    }
+
+    &__price-calculations {
+      width: 100%;
+
+      td {
+        &:last-of-type {
+          text-align: end;
+        }
+      }
+    }
+
+    &__submit {
+      width: 100%;
+      background-color: $secondaryButtonColor;
+      border: none;
+      outline: none;
+      font-family: "messina_sans";
+      margin-top: 28px;
+      font-size: 20px;
+      padding: 14px 0;
+      cursor: pointer;
+
+      &:disabled {
+        cursor: auto;
+      }
+    }
+  }
+
+  &-date-input {
+    padding: 0;
+
+    > .input-icon {
+      transform: translate(25px, 5px);
+    }
+  }
+}

@@ -50,7 +50,7 @@ const SearchBar = (props: SearchBarProps) => {
         />
       </div>
 
-      <DateRangePicker inputWrapperClass="search-bar-item" setDatesCallback={setDates} />
+      <DateRangePicker setDatesCallback={setDates} />
 
       <div className="search-bar-item">
         <button type="button" onClick={handleSearch}>
