@@ -1,8 +1,9 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
+import SERVER_ROUTE from "./utils/constants";
 
 const link = createUploadLink({
-  uri: `http://${process.env.REACT_APP_HOST}${process.env.REACT_APP_GRAPHQL_ROUTE}`,
+  uri: `${SERVER_ROUTE}${process.env.REACT_APP_GRAPHQL_ROUTE}`,
   credentials: "same-origin",
 });
 

@@ -1,0 +1,21 @@
+.search {
+  &-results {
+    display: flex;
+    position: relative;
+    height: 100%;
+    padding: 14px;
+
+    &.centered {
+      justify-content: center;
+    }
+
+    &-cards {
+      flex-basis: 50%;
+    }
+  }
+
+  &-loading {
+    position: absolute;
+    top: 40%;
+  }
+}

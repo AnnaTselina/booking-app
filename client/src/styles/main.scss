@@ -6,6 +6,10 @@
   padding: 0;
 }
 
+.app-content {
+  height: 94vh;
+}
+
 [class^="icon-"],
 [class*=" icon-"] {
   &:before {
@@ -67,6 +71,11 @@ body {
   height: 1em;
   transform: translate(-50%, -50%);
   width: 1em;
+
+  &.big {
+    font-size: 54px;
+    border-width: 0.2rem;
+  }
 }
 
 h1,
@@ -76,6 +85,7 @@ h4,
 h5,
 h6 {
   font-weight: 100;
+  margin-bottom: 10px;
 }
 
 a {
@@ -88,6 +98,10 @@ button {
   &.small {
     font-size: 12px;
   }
+}
+
+p {
+  margin-bottom: 8px;
 }
 
 button {

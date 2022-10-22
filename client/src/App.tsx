@@ -11,10 +11,12 @@ const App = () => (
   <ApolloProvider client={client}>
     <BrowserRouter>
       <Header />
-      <Routes>
-        <Route path={routes.HOME} element={<HomePageContainer />} />
-        <Route path={routes.SEARCH} element={<SearchPageContainer />} />
-      </Routes>
+      <div className="app-content">
+        <Routes>
+          <Route path={routes.HOME} element={<HomePageContainer />} />
+          <Route path={routes.SEARCH} element={<SearchPageContainer />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   </ApolloProvider>
 );
