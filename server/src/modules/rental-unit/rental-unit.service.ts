@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { RentalUnit } from "./entities/rental-unit.entity";
-import { Repository } from "typeorm";
+import { In, Not, Repository } from "typeorm";
 import { RentalUnitImage } from "./entities/rental-unit-image.entity";
 import { Country } from "./entities/country.entity";
 import { State } from "./entities/state.entity";
@@ -26,6 +26,15 @@ export class RentalUnitService {
     checkIn?: string,
     checkOut?: string,
   ) {
+    let bookedRentalUnitsIds: string[] = [];
+
+    if (checkIn && checkOut) {
+      bookedRentalUnitsIds = await this.bookingService.getBookedRentalUnitsIds(
+        new Date(checkIn),
+        new Date(checkOut),
+      );
+    }
+
     const query = this.rentalUnitRepository.createQueryBuilder("rental-unit");
 
     query
@@ -50,15 +59,8 @@ export class RentalUnitService {
         });
     }
 
-    if (checkIn && checkOut) {
-      query
-        .where("booking.rentalUnitId IS NULL")
-        .orWhere("booking.start_date >= :checkOut", {
-          checkOut: `${checkOut} 00:00:00`,
-        })
-        .orWhere("booking.end_date <= :checkIn", {
-          checkIn: `${checkIn} 00:00:00`,
-        });
+    if (bookedRentalUnitsIds.length) {
+      query.where({ id: Not(In(bookedRentalUnitsIds)) });
     }
 
     query.select([

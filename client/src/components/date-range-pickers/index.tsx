@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./styles.scss";
@@ -9,10 +9,11 @@ interface IDateRangePicker {
     React.SetStateAction<{ checkIn: Date | null; checkOut: null | Date }>
   >;
   clearButton?: boolean;
+  availability?: { start_date: string; end_date: string }[];
 }
 
 const DateRangePicker = (props: IDateRangePicker) => {
-  const { inputWrapperClass, setDatesCallback, clearButton } = props;
+  const { inputWrapperClass, setDatesCallback, clearButton, availability } = props;
 
   const [startDate, setStartDate] = useState<null | Date>(null);
   const [endDate, setEndDate] = useState<null | Date>(null);
@@ -50,6 +51,17 @@ const DateRangePicker = (props: IDateRangePicker) => {
     }
   };
 
+  const availabilityParsedForDatePicker = useMemo(() => {
+    if (availability) {
+      return availability.map((range) => ({
+        start: new Date(`${range.start_date}T00:00:00`),
+        end: new Date(`${range.end_date}T00:00:00`),
+      }));
+    }
+
+    return [];
+  }, [availability]);
+
   return (
     <>
       <div className="date-pickers-wrapper">
@@ -65,6 +77,7 @@ const DateRangePicker = (props: IDateRangePicker) => {
             placeholderText="Check-in"
             calendarClassName="date-pickers-inputs"
             minDate={today.current}
+            excludeDateIntervals={availabilityParsedForDatePicker}
           />
         </div>
 
@@ -80,6 +93,7 @@ const DateRangePicker = (props: IDateRangePicker) => {
             placeholderText="Check-out"
             calendarClassName="date-pickers-inputs"
             minDate={minCheckOutDate.current}
+            excludeDateIntervals={availabilityParsedForDatePicker}
           />
         </div>
       </div>
@@ -97,6 +111,7 @@ DateRangePicker.defaultProps = {
   inputWrapperClass: "",
   setDatesCallback: () => {},
   clearButton: false,
+  availability: [],
 };
 
 export default DateRangePicker;

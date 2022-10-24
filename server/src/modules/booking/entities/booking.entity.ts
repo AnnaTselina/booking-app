@@ -14,11 +14,11 @@ export class Booking {
   @Field(() => Int)
   num_guests: number;
 
-  @Column()
+  @Column({ type: "date" })
   @Field(() => GraphQLDateTime)
   start_date: Date;
 
-  @Column()
+  @Column({ type: "date" })
   @Field(() => GraphQLDateTime)
   end_date: Date;
 

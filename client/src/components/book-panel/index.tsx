@@ -1,7 +1,6 @@
 import { useMutation } from "@apollo/client";
 import React, { useMemo, useState } from "react";
 import { RESERVE_RENTAL_UNIT_MUTATION } from "../../queries-graphql";
-import parseDate from "../../utils/helpers";
 import DateRangePicker from "../date-range-pickers";
 import "./styles.scss";
 
@@ -9,10 +8,11 @@ interface IBookPanel {
   maxGuests: number;
   pricePerNight: number;
   idRentalUnit: string;
+  availability: { start_date: string; end_date: string }[];
 }
 
 const BookPanel = (props: IBookPanel) => {
-  const { maxGuests, pricePerNight, idRentalUnit } = props;
+  const { maxGuests, pricePerNight, idRentalUnit, availability } = props;
 
   const [dates, setDates] = useState<{ checkIn: Date | null; checkOut: Date | null }>({
     checkIn: null,
@@ -61,8 +61,8 @@ const BookPanel = (props: IBookPanel) => {
           idRentalUnit,
           numGuests,
           totalPrice,
-          startDate: parseDate(dates.checkIn),
-          endDate: parseDate(dates.checkOut),
+          startDate: dates.checkIn,
+          endDate: dates.checkOut,
         },
       });
     }
@@ -76,6 +76,7 @@ const BookPanel = (props: IBookPanel) => {
             setDatesCallback={setDates}
             clearButton
             inputWrapperClass="bookpanel-date-input"
+            availability={availability}
           />
 
           <div className="bookpanel-box__num-guests">

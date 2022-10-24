@@ -28,8 +28,8 @@ const SearchPageContainer = () => {
         }
 
         if (checkIn && checkOut) {
-          variables.checkIn = checkIn;
-          variables.checkOut = checkOut;
+          variables.checkin = checkIn;
+          variables.checkout = checkOut;
         }
 
         getRentalUnits({

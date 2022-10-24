@@ -83,9 +83,15 @@ type RentalUnit {
   bookings: [Booking!]!
 }
 
+type GetRentalUnitAvailabilityResponse {
+  start_date: String!
+  end_date: String!
+}
+
 type Query {
   getRentalUnits(getRentalUnitsInput: GetRentalUnitsInput!): [RentalUnit!]!
   getRentalUnit(id: String!): RentalUnit
+  getRentalUnitAvailability(id: String!): [GetRentalUnitAvailabilityResponse!]!
 }
 
 input GetRentalUnitsInput {
@@ -101,7 +107,7 @@ type Mutation {
 input ReserveRentalUnitInput {
   id_rental_unit: String!
   num_guests: Int!
-  start_date: String!
+  start_date: DateTime!
   total_price: Float!
-  end_date: String!
+  end_date: DateTime!
 }

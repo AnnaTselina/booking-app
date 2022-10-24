@@ -42,6 +42,14 @@ const Apartment = () => {
     return null;
   }, [data]);
 
+  const availability = useMemo(() => {
+    if (data?.getRentalUnitAvailability) {
+      return data.getRentalUnitAvailability;
+    }
+
+    return null;
+  }, [data]);
+
   return (
     <div className={`apartment ${loading ? "centered" : ""}`}>
       {loading ? (
@@ -110,6 +118,7 @@ const Apartment = () => {
                     maxGuests={rentalUnit.max_guests}
                     pricePerNight={rentalUnit.price}
                     idRentalUnit={apartmentId.current}
+                    availability={availability}
                   />
                 )}
               </div>

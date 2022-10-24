@@ -8,6 +8,7 @@ import {
   IsPositive,
   Min,
 } from "class-validator";
+import { GraphQLDateTime } from "graphql-scalars";
 
 @ValidatorConstraint({ name: "isBefore", async: false })
 export class IsBeforeConstraint implements ValidatorConstraintInterface {
@@ -32,7 +33,7 @@ export class ReserveRentalUnitInput {
   @IsNotEmpty()
   num_guests: number;
 
-  @Field(() => String)
+  @Field(() => GraphQLDateTime)
   @IsNotEmpty()
   @Validate(IsBeforeConstraint, ["end_date"])
   start_date: Date;
@@ -43,7 +44,7 @@ export class ReserveRentalUnitInput {
   @Min(1)
   total_price: number;
 
-  @Field(() => String)
+  @Field(() => GraphQLDateTime)
   @IsNotEmpty()
   end_date: Date;
 }

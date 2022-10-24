@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Between, LessThan, MoreThan, Not, Repository } from "typeorm";
 import { RentalUnit } from "../rental-unit/entities/rental-unit.entity";
 import { Booking } from "./entities/booking.entity";
 
@@ -27,5 +27,42 @@ export class BookingService {
     });
 
     return await this.bookingRepository.save(newBooking);
+  }
+
+  async getRentalUnitAvailability(id: string) {
+    return await this.bookingRepository
+      .createQueryBuilder("booking")
+      .where({ rental_unit: id })
+      .select(["booking.start_date", "booking.end_date"])
+      .getMany();
+  }
+
+  async getBookedRentalUnitsIds(checkIn: Date, checkOut: Date) {
+    const result = await this.bookingRepository
+      .createQueryBuilder("booking")
+      .where({
+        start_date: Between(checkIn, checkOut),
+      })
+      .andWhere({
+        start_date: Not(checkOut),
+      })
+      .orWhere({
+        end_date: Between(checkIn, checkOut),
+      })
+      .andWhere({
+        end_date: Not(checkIn),
+      })
+      .orWhere({
+        start_date: LessThan(checkIn),
+        end_date: MoreThan(checkOut),
+      })
+      .orWhere({
+        start_date: MoreThan(checkIn),
+        end_date: LessThan(checkOut),
+      })
+      .innerJoinAndSelect("booking.rental_unit", "rental-unit")
+      .getMany();
+
+    return result.map((booking) => booking.rental_unit.id);
   }
 }
