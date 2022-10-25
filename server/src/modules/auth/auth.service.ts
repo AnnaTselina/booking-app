@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import CustomGraphqlError from "src/error-handling/custom-error";
+import { GraphQLError } from "graphql";
 import { UserService } from "../user/user.service";
+import { codes } from "../../error-handling/format-error-graphql";
 
 @Injectable()
 export class AuthService {
@@ -12,10 +13,13 @@ export class AuthService {
     const checkIfExists = await this.userService.findUserByEmail(email);
 
     if (checkIfExists) {
-      throw new CustomGraphqlError(
-        "User with provided email already exists",
-        400,
-      );
+      throw new GraphQLError("User with provided email already exists.", {
+        extensions: {
+          custom: true,
+          code: codes.bad_user_input,
+          status: 400,
+        },
+      });
     }
 
     await this.userService.createUser({ email, password });

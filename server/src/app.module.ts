@@ -8,7 +8,7 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ApolloDriver } from "@nestjs/apollo";
 import modules from "./modules/modules";
-import formatGraphqlError from "./error-handling/format-error-graphql";
+import { formatGraphqlError } from "./error-handling/format-error-graphql";
 
 @Module({
   imports: [
