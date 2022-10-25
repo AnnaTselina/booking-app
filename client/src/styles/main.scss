@@ -91,6 +91,10 @@ h6 {
 a {
   color: unset;
   text-decoration: none;
+
+  &.underlined {
+    text-decoration: underline;
+  }
 }
 
 p,
