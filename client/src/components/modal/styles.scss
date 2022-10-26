@@ -16,16 +16,17 @@
 
 .modal-content {
   background-color: $colorMin;
-  width: 70%;
+  width: 55%;
   height: 70%;
-  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
 
   &-heading {
     display: flex;
     justify-content: space-between;
     padding: 14px;
 
-    h6 {
+    h3 {
       width: 100%;
       text-align: center;
       margin-bottom: 0;

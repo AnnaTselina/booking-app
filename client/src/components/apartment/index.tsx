@@ -11,7 +11,7 @@ import "./styles.scss";
 import "swiper/css";
 import "swiper/css/navigation";
 
-import SERVER_ROUTE from "../../utils/constants";
+import { SERVER_ROUTE } from "../../utils/constants";
 import BookPanel from "../book-panel";
 
 SwiperCore.use([Navigation, Pagination]);

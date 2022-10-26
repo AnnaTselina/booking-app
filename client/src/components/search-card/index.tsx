@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import SERVER_ROUTE from "../../utils/constants";
+import { SERVER_ROUTE } from "../../utils/constants";
 import routes from "../../utils/routes";
 import { IRentalUnit } from "../../utils/types";
 import "./styles.scss";

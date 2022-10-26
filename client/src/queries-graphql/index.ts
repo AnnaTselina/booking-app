@@ -101,3 +101,9 @@ export const RESERVE_RENTAL_UNIT_MUTATION = gql`
     }
   }
 `;
+
+export const SIGN_UP_MUTATION = gql`
+  mutation SignUp($email: String!, $password: String!) {
+    signUp(signUpInput: { email: $email, password: $password })
+  }
+`;

@@ -29,7 +29,7 @@ const Modal = ({ children, isOpen, handleClose, heading }: IModal) => {
       <div className="modal">
         <div className="modal-content">
           <div className="modal-content-heading">
-            <h6>{heading}</h6>
+            <h3>{heading}</h3>
             <button type="button" onClick={handleClose} className="link">
               <span className="icon-cancel" />
             </button>

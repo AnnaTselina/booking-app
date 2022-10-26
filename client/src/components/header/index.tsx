@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import routes from "../../utils/routes";
 import Modal from "../modal";
+import SignUpForm from "../sign-up-form";
 import "./styles.scss";
 
 const Header = () => {
@@ -21,8 +22,8 @@ const Header = () => {
         </button>
       </div>
 
-      <Modal isOpen={modalOpened} handleClose={closeModal} heading="Modal heading">
-        <div>modal content</div>
+      <Modal isOpen={modalOpened} handleClose={closeModal} heading="Sign up">
+        <SignUpForm />
       </Modal>
     </header>
   );
