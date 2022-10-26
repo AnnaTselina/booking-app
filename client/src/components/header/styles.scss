@@ -25,4 +25,10 @@ header {
   padding: 9px 28px;
   background-color: $colorMin;
   border-bottom: 1px solid $colorGrey;
+
+  .header-buttons {
+    button {
+      text-transform: capitalize;
+    }
+  }
 }

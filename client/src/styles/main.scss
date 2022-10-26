@@ -109,12 +109,18 @@ p {
 }
 
 button {
+  font-family: $font2;
+
   &.link {
     background-color: transparent;
     border: none;
     outline: none;
     cursor: pointer;
     text-decoration: underline;
+
+    &.not-underlined {
+      text-decoration: none;
+    }
   }
 }
 
