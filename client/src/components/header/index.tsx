@@ -3,10 +3,13 @@ import { NavLink } from "react-router-dom";
 import routes from "../../utils/routes";
 import Modal from "../modal";
 import SignUpForm from "../sign-up-form";
+// import SignUpForm from "../sign-up-form";
+import SignUpOptions from "../sign-up-options";
 import "./styles.scss";
 
 const Header = () => {
   const [modalOpened, setModalOpened] = useState(false);
+  const [signUpOption, setSignUpOption] = useState<null | "email">(null);
 
   const closeModal = () => setModalOpened((state) => !state);
 
@@ -22,8 +25,16 @@ const Header = () => {
         </button>
       </div>
 
-      <Modal isOpen={modalOpened} handleClose={closeModal} heading="Sign up">
-        <SignUpForm />
+      <Modal
+        isOpen={modalOpened}
+        handleClose={closeModal}
+        heading={`Sign up with ${signUpOption || ""}:`}
+      >
+        {signUpOption === "email" ? (
+          <SignUpForm />
+        ) : (
+          <SignUpOptions email setSignUpOption={setSignUpOption} />
+        )}
       </Modal>
     </header>
   );
