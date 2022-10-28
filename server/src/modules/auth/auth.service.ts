@@ -26,4 +26,24 @@ export class AuthService {
 
     return true;
   }
+
+  async validateUser(details: { email: string; name: string }) {
+    console.log("------------Auth service validate user");
+    console.log(details);
+
+    const user = await this.userService.findUserByEmail(details.email);
+
+    console.log("-------------Trying to find if user is in database.........");
+    console.log(user);
+
+    if (user) return user;
+
+    console.log("User not found");
+
+    const newUser = await this.userService.createUser(details);
+
+    console.log(`Created new user: ${newUser}`);
+
+    return newUser;
+  }
 }

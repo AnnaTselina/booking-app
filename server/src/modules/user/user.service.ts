@@ -10,11 +10,26 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async createUser({ email, password }: { email: string; password: string }) {
+  async createUser({
+    email,
+    password,
+    name,
+  }: {
+    email: string;
+    password?: string;
+    name?: string;
+  }) {
     const newUser = this.userRepository.create({
       email,
-      password_hash: password,
     });
+
+    if (password) {
+      newUser.password_hash = password;
+    }
+
+    if (name) {
+      newUser.name = name;
+    }
 
     return await this.userRepository.save(newUser);
   }

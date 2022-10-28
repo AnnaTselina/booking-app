@@ -7,7 +7,14 @@ import { GoogleStartegy } from "./strategies/google/google.strategy";
 
 @Module({
   imports: [UserModule],
-  providers: [AuthResolver, AuthService, GoogleStartegy],
+  providers: [
+    AuthResolver,
+    GoogleStartegy,
+    {
+      provide: "AUTH_SERVICE",
+      useClass: AuthService,
+    },
+  ],
   controllers: [AuthController],
   exports: [],
 })

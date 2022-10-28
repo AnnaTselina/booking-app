@@ -14,7 +14,9 @@ export class UserSubscriner implements EntitySubscriberInterface<User> {
   }
 
   async beforeInsert(event: InsertEvent<User>) {
-    const salt = await genSalt();
-    event.entity.password_hash = await hash(event.entity.password_hash, salt);
+    if (event.entity.password_hash) {
+      const salt = await genSalt();
+      event.entity.password_hash = await hash(event.entity.password_hash, salt);
+    }
   }
 }
