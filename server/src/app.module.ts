@@ -9,6 +9,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ApolloDriver } from "@nestjs/apollo";
 import modules from "./modules/modules";
 import { formatGraphqlError } from "./error-handling/format-error-graphql";
+import { PassportModule } from "@nestjs/passport";
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { formatGraphqlError } from "./error-handling/format-error-graphql";
       entities: [`${__dirname}/modules/**/entities/*.entity{.ts,.js}`],
       subscribers: [`${__dirname}/subscribers/*.subscriber{.ts,.js}`],
     }),
+    PassportModule.register({ session: true }),
     ...modules,
   ],
   controllers: [AppController],
