@@ -18,7 +18,7 @@ import { formatGraphqlError } from "./error-handling/format-error-graphql";
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, "..", "..", "_public"),
-      exclude: [`${process.env["GRAPHQL_PATH"]}`],
+      exclude: [`${process.env["GRAPHQL_PATH"]}`, "/auth"],
     }),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
