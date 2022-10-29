@@ -4,3 +4,11 @@ declare namespace NodeJS {
     DB_PORT: number;
   }
 }
+
+declare global {
+  namespace Express {
+    interface Session {
+      user?: User;
+    }
+  }
+}

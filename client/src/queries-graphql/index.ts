@@ -107,3 +107,18 @@ export const SIGN_UP_MUTATION = gql`
     signUp(signUpInput: { email: $email, password: $password })
   }
 `;
+
+export const GET_USER = gql`
+  query {
+    getUser {
+      id
+      email
+    }
+  }
+`;
+
+export const LOGOUT_MUTATION = gql`
+  mutation {
+    logout
+  }
+`;

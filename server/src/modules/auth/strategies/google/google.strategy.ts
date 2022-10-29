@@ -18,9 +18,6 @@ export class GoogleStartegy extends PassportStrategy(Strategy) {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    // console.log("----------validating user");
-    // console.log(profile);
-
     if (!profile.emails) {
       return null;
     }
@@ -29,11 +26,6 @@ export class GoogleStartegy extends PassportStrategy(Strategy) {
       email: profile.emails[0].value,
       name: profile.displayName,
     });
-
-    // console.log("----------- End of validating user (google strategy)");
-    // console.log(user);
-
-    //TODO: POSSIBLY REMOVE PASSWORD_HASH FROM USER FIELDS
 
     return user || null;
   }

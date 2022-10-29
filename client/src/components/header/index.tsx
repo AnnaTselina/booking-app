@@ -1,17 +1,23 @@
-import { useState } from "react";
+import { useQuery, useReactiveVar } from "@apollo/client";
 import { NavLink } from "react-router-dom";
+import { userVar } from "../../apollo-client";
+import { GET_USER } from "../../queries-graphql";
 import routes from "../../utils/routes";
-import Modal from "../modal";
-import SignUpForm from "../sign-up-form";
-// import SignUpForm from "../sign-up-form";
-import SignUpOptions from "../sign-up-options";
+import SignedInPanel from "../signed-in-panel";
+import SignedOutPanel from "../signed-out-panel";
 import "./styles.scss";
 
 const Header = () => {
-  const [modalOpened, setModalOpened] = useState(false);
-  const [signUpOption, setSignUpOption] = useState<null | "email">(null);
+  const { data } = useQuery(GET_USER, {
+    fetchPolicy: "network-only",
+    onCompleted(result) {
+      if (result?.getUser?.email) {
+        userVar(result?.getUser?.email);
+      }
+    },
+  });
 
-  const closeModal = () => setModalOpened((state) => !state);
+  const userId = useReactiveVar(userVar);
 
   return (
     <header>
@@ -19,23 +25,7 @@ const Header = () => {
         <h1 className="logo">Swap</h1>
       </NavLink>
 
-      <div className="header-buttons">
-        <button type="button" className="link not-underlined" onClick={closeModal}>
-          Sign up
-        </button>
-      </div>
-
-      <Modal
-        isOpen={modalOpened}
-        handleClose={closeModal}
-        heading={`Sign up with ${signUpOption || ""}:`}
-      >
-        {signUpOption === "email" ? (
-          <SignUpForm />
-        ) : (
-          <SignUpOptions email setSignUpOption={setSignUpOption} />
-        )}
-      </Modal>
+      {userId ? <SignedInPanel email={data.getUser.email} /> : <SignedOutPanel />}
     </header>
   );
 };

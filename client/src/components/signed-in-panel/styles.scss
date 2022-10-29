@@ -1,0 +1,61 @@
+@import "../../styles/vars.scss";
+
+.account-tooltip {
+  position: relative;
+
+  &-open-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 33px;
+
+    .icon-person {
+      &:before {
+        font-size: 18px;
+      }
+    }
+  }
+
+  &-content {
+    position: absolute;
+    top: 125%;
+    right: 0;
+    background-color: $colorMin;
+    padding: 18px;
+    border-radius: 3px;
+    animation-name: appearing;
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+    border: 1px solid $colorGrey;
+
+    .arrow {
+      border-color: transparent;
+      border-style: solid;
+      display: block;
+      height: 0;
+      position: absolute;
+      border-bottom-color: $colorGrey;
+      border-width: 0 12px 12px;
+      right: 30px;
+      top: -11px;
+
+      &:after {
+        border-color: transparent;
+        border-style: solid;
+        display: block;
+        height: 0;
+        position: absolute;
+        width: 0;
+        border-width: 12px;
+        border-bottom: 11px solid #fff;
+        border-top-width: 0;
+        content: "";
+        display: block;
+        position: absolute;
+        right: -12px;
+        top: 1px;
+      }
+    }
+  }
+}

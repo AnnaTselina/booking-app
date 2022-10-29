@@ -5,7 +5,6 @@ import { codes } from "../../error-handling/format-error-graphql";
 
 @Injectable()
 export class AuthService {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor(private userService: UserService) {}
 
   async signUp({ email, password }: { email: string; password: string }) {
@@ -28,22 +27,15 @@ export class AuthService {
   }
 
   async validateUser(details: { email: string; name: string }) {
-    // console.log("------------Auth service validate user");
-    // console.log(details);
+    let user = await this.userService.findUserByEmail(details.email);
 
-    const user = await this.userService.findUserByEmail(details.email);
+    if (!user) {
+      user = await this.userService.createUser(details);
+    }
 
-    // console.log("-------------Trying to find if user is in database.........");
-    // console.log(user);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password_hash, ...rest } = user;
 
-    if (user) return user;
-
-    // console.log("User not found");
-
-    const newUser = await this.userService.createUser(details);
-
-    // console.log(`Created new user: ${newUser}`);
-
-    return newUser;
+    return rest;
   }
 }

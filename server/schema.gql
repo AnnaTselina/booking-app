@@ -88,10 +88,18 @@ type GetRentalUnitAvailabilityResponse {
   end_date: String!
 }
 
+type User {
+  id: String!
+  email: String!
+  name: String!
+  confirmed: Boolean!
+}
+
 type Query {
   getRentalUnits(getRentalUnitsInput: GetRentalUnitsInput!): [RentalUnit!]!
   getRentalUnit(id: String!): RentalUnit
   getRentalUnitAvailability(id: String!): [GetRentalUnitAvailabilityResponse!]!
+  getUser: User!
 }
 
 input GetRentalUnitsInput {
@@ -103,6 +111,7 @@ input GetRentalUnitsInput {
 type Mutation {
   reserveRentalUnit(reserveRentalUnitInput: ReserveRentalUnitInput!): Booking!
   signUp(signUpInput: SignUpInput!): Boolean!
+  logout: Boolean!
 }
 
 input ReserveRentalUnitInput {
