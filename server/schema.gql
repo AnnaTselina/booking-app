@@ -111,6 +111,7 @@ input GetRentalUnitsInput {
 type Mutation {
   reserveRentalUnit(reserveRentalUnitInput: ReserveRentalUnitInput!): Booking!
   signUp(signUpInput: SignUpInput!): Boolean!
+  login: Boolean!
   logout: Boolean!
 }
 

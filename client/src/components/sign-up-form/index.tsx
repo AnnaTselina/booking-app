@@ -7,7 +7,7 @@ import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/constants";
 const emailInputErrorMessage = "Please, enter valid email.";
 const passwordInputErrorMessage =
   "Please, enter password that is at least 8 characters long, contains at least one lowercase and one uppercase letter and at least one special character.";
-const signUpSuccessMessage = "Successfully signed up."; // "Please, check your email for verification.";
+const signUpSuccessMessage = "Please, check your email for verification.";
 
 const SignUpForm = () => {
   const [formValues, setFormValues] = useState({

@@ -9,7 +9,7 @@ export class AuthResolver {
   constructor(
     @Inject("AUTH_SERVICE") private readonly authService: AuthService,
   ) {}
-
+  //Local stategy authentication
   @Mutation(() => Boolean)
   async signUp(@Args("signUpInput") signUpInput: SignUpInput) {
     try {
@@ -20,6 +20,13 @@ export class AuthResolver {
     }
   }
 
+  //Local stategy authentication
+  @Mutation(() => Boolean)
+  async login() {
+    return true;
+  }
+
+  //Google strategy authentication
   @Mutation(() => Boolean)
   logout(@Context() context: { req: Express.Request }) {
     try {

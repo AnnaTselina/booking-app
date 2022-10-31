@@ -1,11 +1,19 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { GraphQLError } from "graphql";
 import { UserService } from "../user/user.service";
 import { codes } from "../../error-handling/format-error-graphql";
+import {
+  confirmEmailLink,
+  sendEmail,
+} from "src/utils/send-email/send-confirmation-email";
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  logger: Logger;
+
+  constructor(private userService: UserService) {
+    this.logger = new Logger(AuthService.name);
+  }
 
   async signUp({ email, password }: { email: string; password: string }) {
     //check if user with provided email exists
@@ -21,7 +29,11 @@ export class AuthService {
       });
     }
 
-    await this.userService.createUser({ email, password });
+    const user = await this.userService.createUser({ email, password });
+
+    const messageId = await sendEmail(email, await confirmEmailLink(user.id));
+
+    this.logger.log(`Confirmation email send ${messageId}`);
 
     return true;
   }
