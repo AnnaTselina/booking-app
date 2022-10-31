@@ -25,6 +25,8 @@ export class UserService {
 
     if (password) {
       newUser.password_hash = password;
+    } else {
+      newUser.confirmed = true;
     }
 
     if (name) {
