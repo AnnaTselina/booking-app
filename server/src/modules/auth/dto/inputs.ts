@@ -19,3 +19,12 @@ export class SignUpInput {
   })
   password: string;
 }
+
+@InputType({})
+export class LoginInput {
+  @Field()
+  username: string;
+
+  @Field()
+  password: string;
+}

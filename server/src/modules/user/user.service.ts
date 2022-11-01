@@ -14,13 +14,16 @@ export class UserService {
     email,
     password,
     name,
+    confirmed,
   }: {
     email: string;
     password?: string;
     name?: string;
+    confirmed?: boolean;
   }) {
     const newUser = this.userRepository.create({
       email,
+      confirmed,
     });
 
     if (password) {

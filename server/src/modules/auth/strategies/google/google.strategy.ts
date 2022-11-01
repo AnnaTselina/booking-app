@@ -22,7 +22,7 @@ export class GoogleStartegy extends PassportStrategy(Strategy) {
       return null;
     }
 
-    const user = await this.authService.validateUser({
+    const user = await this.authService.checkIfUserExistsOrCreateNewUser({
       email: profile.emails[0].value,
       name: profile.displayName,
     });

@@ -6,6 +6,7 @@ import {
   confirmEmailLink,
   sendEmail,
 } from "src/utils/send-email/send-confirmation-email";
+import { compare } from "bcrypt";
 
 @Injectable()
 export class AuthService {
@@ -38,16 +39,59 @@ export class AuthService {
     return true;
   }
 
-  async validateUser(details: { email: string; name: string }) {
-    let user = await this.userService.findUserByEmail(details.email);
+  async checkIfUserExistsOrCreateNewUser(userDetails: {
+    email: string;
+    name?: string;
+    password?: string;
+  }) {
+    let user = await this.userService.findUserByEmail(userDetails.email);
 
     if (!user) {
-      user = await this.userService.createUser(details);
+      user = await this.userService.createUser({
+        ...userDetails,
+        confirmed: true,
+      });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password_hash, ...rest } = user;
+
+      return rest;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password_hash, ...rest } = user;
+    return user;
+  }
 
-    return rest;
+  async validateExistingUser(userDetails: { email: string; password: string }) {
+    const user = await this.userService.findUserByEmail(userDetails.email);
+
+    if (!user) {
+      return null;
+    }
+
+    const passwordMatch = await compare(
+      userDetails.password,
+      user.password_hash,
+    );
+
+    if (!passwordMatch) {
+      throw new GraphQLError("Passwords not matching", {
+        extensions: {
+          custom: true,
+          code: codes.bad_user_input,
+          status: 400,
+        },
+      });
+    }
+
+    if (!user.confirmed) {
+      throw new GraphQLError("User not confirmed", {
+        extensions: {
+          custom: true,
+          code: codes.bad_user_input,
+          status: 400,
+        },
+      });
+    }
+
+    return user;
   }
 }

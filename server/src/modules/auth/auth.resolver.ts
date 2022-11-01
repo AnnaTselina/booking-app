@@ -1,8 +1,8 @@
-import { Inject } from "@nestjs/common";
+import { Inject, UseGuards } from "@nestjs/common";
 import { Args, Context, Mutation, Resolver } from "@nestjs/graphql";
-// import { LoggedInGuard } from "src/guards/logged-in.guard";
 import { AuthService } from "./auth.service";
-import { SignUpInput } from "./dto/inputs";
+import { LoginInput, SignUpInput } from "./dto/inputs";
+import { LocalAuthGuard } from "./strategies/local/guard";
 
 @Resolver()
 export class AuthResolver {
@@ -21,8 +21,10 @@ export class AuthResolver {
   }
 
   //Local stategy authentication
+  @UseGuards(LocalAuthGuard)
   @Mutation(() => Boolean)
-  async login() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async login(@Args("loginInput") loginInput: LoginInput) {
     return true;
   }
 

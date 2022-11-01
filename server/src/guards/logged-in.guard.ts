@@ -6,6 +6,6 @@ export class LoggedInGuard implements CanActivate {
   canActivate(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
     const request = ctx.getContext().req;
-    return !!request.user;
+    return request.isAuthenticated();
   }
 }
