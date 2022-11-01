@@ -1,0 +1,16 @@
+@import "../../styles/vars.scss";
+
+.confirm-user {
+  &-text {
+    padding: 14px;
+    font-family: $font2;
+  }
+
+  &-loading {
+    display: flex;
+    justify-content: center;
+    .icon-loading {
+      font-size: 14px;
+    }
+  }
+}

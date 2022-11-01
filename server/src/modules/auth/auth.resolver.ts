@@ -20,6 +20,14 @@ export class AuthResolver {
     }
   }
 
+  @Mutation(() => Boolean)
+  async confirmUser(
+    @Args("id")
+    id: string,
+  ) {
+    return await this.authService.confirmEmail(id);
+  }
+
   //Local stategy authentication
   @UseGuards(LocalAuthGuard)
   @Mutation(() => Boolean)

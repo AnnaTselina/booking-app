@@ -8,6 +8,7 @@ import SearchPageContainer from "./page-containers/search";
 import client from "./apollo-client";
 import Apartment from "./components/apartment";
 import PageNotFound from "./page-containers/page-not-found";
+import ConfirmUser from "./components/confirm-user";
 
 const App = () => (
   <ApolloProvider client={client}>
@@ -19,6 +20,17 @@ const App = () => (
           <Route path={routes.SEARCH} element={<SearchPageContainer />} />
           <Route path={routes.APARTMENT}>
             <Route path=":id" element={<Apartment />} />
+          </Route>
+          <Route path={routes.USER}>
+            <Route
+              path="confirm/:id"
+              element={
+                <>
+                  <ConfirmUser />
+                  <HomePageContainer />
+                </>
+              }
+            />
           </Route>
           <Route path="/*" element={<PageNotFound />} />
         </Routes>

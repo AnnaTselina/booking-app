@@ -4,6 +4,7 @@ import { UserService } from "../user/user.service";
 import { codes } from "../../error-handling/format-error-graphql";
 import {
   confirmEmailLink,
+  redisConfirmationEmails,
   sendEmail,
 } from "src/utils/send-email/send-confirmation-email";
 import { compare } from "bcrypt";
@@ -93,5 +94,25 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  async confirmEmail(id: string) {
+    const userId = await redisConfirmationEmails.get(id);
+
+    if (!userId) {
+      throw new GraphQLError("Confirmation id not found.", {
+        extensions: {
+          custom: true,
+          code: codes.bad_user_input,
+          status: 400,
+        },
+      });
+    }
+
+    await this.userService.updateUser(userId, { confirmed: true });
+
+    await redisConfirmationEmails.del(id);
+
+    return true;
   }
 }
