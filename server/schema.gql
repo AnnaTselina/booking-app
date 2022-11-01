@@ -112,7 +112,7 @@ type Mutation {
   reserveRentalUnit(reserveRentalUnitInput: ReserveRentalUnitInput!): Booking!
   signUp(signUpInput: SignUpInput!): Boolean!
   confirmUser(id: String!): Boolean!
-  login(loginInput: LoginInput!): Boolean!
+  login(loginInput: LoginInput!): User!
   logout: Boolean!
 }
 

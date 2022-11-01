@@ -128,3 +128,11 @@ export const CONFIRM_USER_MUTATION = gql`
     confirmUser(id: $id)
   }
 `;
+
+export const LOGIN_MUTATION = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(loginInput: { username: $email, password: $password }) {
+      id
+    }
+  }
+`;

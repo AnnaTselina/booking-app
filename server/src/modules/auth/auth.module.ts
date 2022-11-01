@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { PassportModule } from "@nestjs/passport";
 import { UserModule } from "../user/user.module";
 import { AuthController } from "./auth.controller";
 import { AuthResolver } from "./auth.resolver";
@@ -8,7 +9,7 @@ import { SessionSerializer } from "./strategies/google/serialize";
 import { LocalStrategy } from "./strategies/local/local.strategy";
 
 @Module({
-  imports: [UserModule],
+  imports: [UserModule, PassportModule.register({ session: true })],
   providers: [
     AuthResolver,
     GoogleStartegy,
