@@ -5,7 +5,7 @@ import { AuthController } from "./auth.controller";
 import { AuthResolver } from "./auth.resolver";
 import { AuthService } from "./auth.service";
 import { GoogleStartegy } from "./strategies/google/google.strategy";
-import { SessionSerializer } from "./strategies/google/serialize";
+import { SessionSerializer } from "./strategies/serialize";
 import { LocalStrategy } from "./strategies/local/local.strategy";
 
 @Module({

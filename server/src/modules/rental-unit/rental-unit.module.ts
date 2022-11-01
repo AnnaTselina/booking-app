@@ -11,6 +11,12 @@ import { BookingModule } from "../booking/booking.module";
     TypeOrmModule.forFeature([RentalUnit, RentalUnitImage]),
     BookingModule,
   ],
-  providers: [RentalUnitResolver, RentalUnitService],
+  providers: [
+    RentalUnitResolver,
+    {
+      provide: "RENTAL_UNIT_SERVICE",
+      useClass: RentalUnitService,
+    },
+  ],
 })
 export class RentalUnitModule {}

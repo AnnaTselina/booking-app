@@ -1,3 +1,4 @@
+import { Inject } from "@nestjs/common";
 import { Resolver, Query, Args, Mutation } from "@nestjs/graphql";
 import { Booking } from "../booking/entities/booking.entity";
 import { GetRentalUnitsInput, ReserveRentalUnitInput } from "./dto/inputs";
@@ -6,7 +7,10 @@ import { RentalUnitService } from "./rental-unit.service";
 
 @Resolver()
 export class RentalUnitResolver {
-  constructor(private readonly rentalUnitService: RentalUnitService) {}
+  constructor(
+    @Inject("RENTAL_UNIT_SERVICE")
+    private readonly rentalUnitService: RentalUnitService,
+  ) {}
 
   @Query(() => [RentalUnit])
   async getRentalUnits(

@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Inject, Injectable, Logger } from "@nestjs/common";
 import { GraphQLError } from "graphql";
 import { UserService } from "../user/user.service";
 import { codes } from "../../error-handling/format-error-graphql";
@@ -13,12 +13,13 @@ import { compare } from "bcrypt";
 export class AuthService {
   logger: Logger;
 
-  constructor(private userService: UserService) {
+  constructor(
+    @Inject("USER_SERVICE") private readonly userService: UserService,
+  ) {
     this.logger = new Logger(AuthService.name);
   }
 
   async signUp({ email, password }: { email: string; password: string }) {
-    //check if user with provided email exists
     const checkIfExists = await this.userService.findUserByEmail(email);
 
     if (checkIfExists) {

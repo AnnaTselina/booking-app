@@ -8,7 +8,6 @@ import { genSalt, hash } from "bcrypt";
 
 @EventSubscriber()
 export class UserSubscriner implements EntitySubscriberInterface<User> {
-  //Indicates that this subscriber only listens to User events
   listenTo() {
     return User;
   }

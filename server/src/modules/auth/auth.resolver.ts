@@ -13,12 +13,7 @@ export class AuthResolver {
   //Local stategy authentication
   @Mutation(() => Boolean)
   async signUp(@Args("signUpInput") signUpInput: SignUpInput) {
-    try {
-      await this.authService.signUp(signUpInput);
-      return true;
-    } catch (e) {
-      return e;
-    }
+    return await this.authService.signUp(signUpInput);
   }
 
   @Mutation(() => Boolean)
@@ -43,15 +38,11 @@ export class AuthResolver {
   //Google strategy authentication
   @Mutation(() => Boolean)
   logout(@Context() context: { req: Express.Request }) {
-    try {
-      context.req.session.destroy((err) => {
-        if (err) {
-          return err;
-        }
-      });
-      return true;
-    } catch (e) {
-      return e;
-    }
+    context.req.session.destroy((err) => {
+      if (err) {
+        return err;
+      }
+    });
+    return true;
   }
 }
