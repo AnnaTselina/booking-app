@@ -1,0 +1,74 @@
+@import "../../styles/vars.scss";
+
+.login-form {
+  margin-top: 50px;
+  font-family: $font2;
+  padding: 0 28px;
+
+  &-element {
+    label {
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid $colorGrey;
+      padding: 14px;
+      border-radius: 2px;
+      box-sizing: border-box;
+      font-size: 16px;
+
+      &:focus {
+        outline: 1px solid black;
+      }
+    }
+
+    &-error {
+      height: 45px;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    &.input-error {
+      color: $errorColor;
+      input {
+        border-color: $errorColor;
+        color: $errorColor;
+      }
+    }
+  }
+
+  &-submit {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+
+    button {
+      display: flex;
+      padding: 9px 36px;
+      background-color: $colorGrey;
+      border: none;
+      font-size: 16px;
+      border-radius: 2px;
+      cursor: pointer;
+      text-transform: capitalize;
+
+      &[disabled] {
+        color: $colorMin;
+        cursor: initial;
+      }
+
+      .icon-loading {
+        display: block;
+        margin-right: 8px;
+      }
+    }
+  }
+
+  &-error {
+    font-size: 14px;
+    color: $errorColor;
+    height: 21px;
+  }
+}

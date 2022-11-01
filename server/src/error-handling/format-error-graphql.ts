@@ -7,6 +7,7 @@ const logger = new Logger("NestApplication");
 export const codes = {
   internal_server_error: "INTERNAL_SERVER_ERROR",
   bad_user_input: "BAD_USER_INPUT",
+  graphql_validation_error: "GRAPHQL_VALIDATION_FAILED",
 };
 
 export const formatGraphqlError = (error: GraphQLError | ApolloError) => {
@@ -17,9 +18,15 @@ export const formatGraphqlError = (error: GraphQLError | ApolloError) => {
   };
 
   if (error instanceof ApolloError) {
-    returnedError.message = error.extensions.response.message;
-    returnedError.statusCode = error.extensions.response.statusCode;
-    returnedError.error = codes.bad_user_input;
+    if (error.extensions.code === codes.graphql_validation_error) {
+      returnedError.message = [error.message];
+      returnedError.statusCode = 400;
+      returnedError.error = codes.bad_user_input;
+    } else {
+      returnedError.message = error.extensions.response.message;
+      returnedError.statusCode = error.extensions.response.statusCode;
+      returnedError.error = codes.bad_user_input;
+    }
   } else if (
     error instanceof GraphQLError &&
     error.extensions.custom &&

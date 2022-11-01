@@ -111,6 +111,8 @@ input GetRentalUnitsInput {
 type Mutation {
   reserveRentalUnit(reserveRentalUnitInput: ReserveRentalUnitInput!): Booking!
   signUp(signUpInput: SignUpInput!): Boolean!
+  confirmUser(id: String!): Boolean!
+  login(loginInput: LoginInput!): User!
   logout: Boolean!
 }
 
@@ -124,5 +126,10 @@ input ReserveRentalUnitInput {
 
 input SignUpInput {
   email: String!
+  password: String!
+}
+
+input LoginInput {
+  username: String!
   password: String!
 }

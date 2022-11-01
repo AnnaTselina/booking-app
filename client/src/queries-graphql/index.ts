@@ -122,3 +122,17 @@ export const LOGOUT_MUTATION = gql`
     logout
   }
 `;
+
+export const CONFIRM_USER_MUTATION = gql`
+  mutation ConfirmUser($id: String!) {
+    confirmUser(id: $id)
+  }
+`;
+
+export const LOGIN_MUTATION = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(loginInput: { username: $email, password: $password }) {
+      id
+    }
+  }
+`;

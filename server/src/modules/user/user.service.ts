@@ -14,13 +14,16 @@ export class UserService {
     email,
     password,
     name,
+    confirmed,
   }: {
     email: string;
     password?: string;
     name?: string;
+    confirmed?: boolean;
   }) {
     const newUser = this.userRepository.create({
       email,
+      confirmed,
     });
 
     if (password) {
@@ -51,4 +54,21 @@ export class UserService {
       },
     });
   }
+
+  async updateUser(userId: string, updateData: IUpdateUserPayload) {
+    const result = await this.userRepository
+      .createQueryBuilder()
+      .update("user")
+      .set(updateData)
+      .where("id = :userId", { userId })
+      .returning("*")
+      .execute();
+
+    return result.raw[0];
+  }
+}
+
+interface IUpdateUserPayload {
+  confirmed?: boolean;
+  is_host?: boolean;
 }

@@ -1,15 +1,11 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "react";
 import { userVar } from "../../apollo-client";
-import { LOGOUT_MUTATION } from "../../queries-graphql";
+import { GET_USER, LOGOUT_MUTATION } from "../../queries-graphql";
 import "./styles.scss";
 
-interface ISignedInPanel {
-  email: string;
-}
-
-const SignedInPanel = (props: ISignedInPanel) => {
-  const { email } = props;
+const SignedInPanel = () => {
+  const { data } = useQuery(GET_USER);
 
   const [tooltipOpened, setTooltipOpened] = useState(false);
 
@@ -36,7 +32,7 @@ const SignedInPanel = (props: ISignedInPanel) => {
       {tooltipOpened && (
         <div className="account-tooltip-content">
           <div className="arrow" />
-          <p>{email}</p>
+          <p>{data.getUser.email}</p>
           <button
             type="button"
             className="link"

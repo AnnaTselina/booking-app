@@ -8,7 +8,7 @@ import SignedOutPanel from "../signed-out-panel";
 import "./styles.scss";
 
 const Header = () => {
-  const { data } = useQuery(GET_USER, {
+  useQuery(GET_USER, {
     fetchPolicy: "network-only",
     onCompleted(result) {
       if (result?.getUser?.email) {
@@ -25,7 +25,7 @@ const Header = () => {
         <h1 className="logo">Swap</h1>
       </NavLink>
 
-      {userId ? <SignedInPanel email={data.getUser.email} /> : <SignedOutPanel />}
+      {userId ? <SignedInPanel /> : <SignedOutPanel />}
     </header>
   );
 };

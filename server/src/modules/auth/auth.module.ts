@@ -1,16 +1,19 @@
 import { Module } from "@nestjs/common";
+import { PassportModule } from "@nestjs/passport";
 import { UserModule } from "../user/user.module";
 import { AuthController } from "./auth.controller";
 import { AuthResolver } from "./auth.resolver";
 import { AuthService } from "./auth.service";
 import { GoogleStartegy } from "./strategies/google/google.strategy";
 import { SessionSerializer } from "./strategies/google/serialize";
+import { LocalStrategy } from "./strategies/local/local.strategy";
 
 @Module({
-  imports: [UserModule],
+  imports: [UserModule, PassportModule.register({ session: true })],
   providers: [
     AuthResolver,
     GoogleStartegy,
+    LocalStrategy,
     SessionSerializer,
     {
       provide: "AUTH_SERVICE",

@@ -18,6 +18,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   app.use(
+    //TODO: set up session storage for production
     session({
       secret: "7aebefb71d3892f17323c6c6af3a7c877",
       saveUninitialized: false,

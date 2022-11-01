@@ -1,15 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { SIGN_UP_MUTATION } from "../../queries-graphql";
 import "./styles.scss";
-import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/constants";
+import { GET_USER, LOGIN_MUTATION } from "../../queries-graphql";
+import { userVar } from "../../apollo-client";
+import { EMAIL_REGEX } from "../../utils/constants";
 
 const emailInputErrorMessage = "Please, enter valid email.";
-const passwordInputErrorMessage =
-  "Please, enter password that is at least 8 characters long, contains at least one lowercase and one uppercase letter and at least one special character.";
-const signUpSuccessMessage = "Please, check your email for verification.";
+const passwordInputErrorMessage = "Please, provide password.";
+const loginUnavailableMessage = "Unable to log in. Please, try again later.";
 
-const SignUpForm = () => {
+interface ILoginFormProps {
+  onSuccessSubmit?: () => void;
+}
+
+const LoginForm = (props: ILoginFormProps) => {
+  const { onSuccessSubmit } = props;
+
   const [formValues, setFormValues] = useState({
     email: { value: "", valid: false },
     password: { value: "", valid: false },
@@ -17,13 +23,21 @@ const SignUpForm = () => {
   const [emailInputMessage, setEmailInputMessage] = useState("");
   const [passwordInputMessage, setPasswordInputMessage] = useState("");
   const [formIsValid, setFormIsvalid] = useState(false);
-  const [successMessage, setSucessMessage] = useState("");
 
-  const [signup, { data, loading, error }] = useMutation(SIGN_UP_MUTATION, {
+  const [login, { loading, error }] = useMutation(LOGIN_MUTATION, {
     variables: {
       email: formValues.email.value,
       password: formValues.password.value,
     },
+    update(_, result) {
+      if (result.data.login) {
+        userVar(result.data.login.id);
+        if (onSuccessSubmit) {
+          onSuccessSubmit();
+        }
+      }
+    },
+    refetchQueries: [{ query: GET_USER }],
   });
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +52,7 @@ const SignUpForm = () => {
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const passwordIsValid = PASSWORD_REGEX.test(e.target.value);
+    const passwordIsValid = !!e.target.value.length;
     setFormValues((state) => ({
       ...state,
       password: { value: e.target.value, valid: passwordIsValid },
@@ -68,62 +82,53 @@ const SignUpForm = () => {
     }
   }, [formValues]);
 
-  useEffect(() => {
-    if (data) {
-      if (data.signUp) {
-        setSucessMessage(signUpSuccessMessage);
-      } else {
-        setFormValues((state) => ({
-          ...state,
-          password: { value: "", valid: false },
-        }));
-      }
-    }
-  }, [data]);
-
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    await signup();
+    await login();
   };
 
-  return successMessage ? (
-    <div className="sign-up-form-success">{successMessage}</div>
-  ) : (
-    <form className="sign-up-form" onSubmit={submit}>
-      <div className={`sign-up-form-element ${emailInputMessage ? "input-error" : ""}`}>
-        <label htmlFor="sign-up-email">Email</label>
+  return (
+    <form className="login-form" onSubmit={submit}>
+      <div className={`login-form-element ${emailInputMessage ? "input-error" : ""}`}>
+        <label htmlFor="login-email">Email</label>
         <input
           type="email"
-          id="sign-up-email"
+          id="login-email"
           value={formValues.email.value}
           onChange={handleEmailChange}
           onBlur={checkEmail}
         />
-        <p className="sign-up-form-element-error">{emailInputMessage}</p>
+        <p className="login-form-element-error">{emailInputMessage}</p>
       </div>
 
-      <div className={`sign-up-form-element ${passwordInputMessage ? "input-error" : ""}`}>
-        <label htmlFor="sign-up-password">Password</label>
+      <div className={`login-form-element ${passwordInputMessage ? "input-error" : ""}`}>
+        <label htmlFor="login-password">Password</label>
         <input
           type="password"
-          id="sign-up-password"
+          id="login-password"
           value={formValues.password.value}
           onChange={handlePasswordChange}
           onBlur={validatePassword}
         />
-        <p className="sign-up-form-element-error">{passwordInputMessage}</p>
+        <p className="login-form-element-error">{passwordInputMessage}</p>
       </div>
 
-      <div className="sign-up-form-error">{error ? error.message : ""}</div>
+      <div className="sign-up-form-error">
+        {error ? error.message || loginUnavailableMessage : ""}
+      </div>
 
-      <div className="sign-up-form-submit">
+      <div className="login-form-submit">
         <button type="submit" disabled={!formIsValid}>
-          {loading && <span className="icon-loading" />} Sign up
+          {loading && <span className="icon-loading" />}
+          Log in
         </button>
       </div>
     </form>
   );
 };
 
-export default SignUpForm;
+LoginForm.defaultProps = {
+  onSuccessSubmit: () => {},
+};
+
+export default LoginForm;
