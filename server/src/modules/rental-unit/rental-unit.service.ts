@@ -8,6 +8,9 @@ import { State } from "./entities/state.entity";
 import { Amenity } from "./entities/amenity.entity";
 import { ReserveRentalUnitInput } from "./dto/inputs";
 import { BookingService } from "../booking/booking.service";
+import { GuestService } from "../guest/guest.service";
+import { GraphQLError } from "graphql";
+import { codes } from "src/error-handling/format-error-graphql";
 
 @Injectable()
 export class RentalUnitService {
@@ -19,6 +22,7 @@ export class RentalUnitService {
     private rentalUnitImageRepository: Repository<RentalUnitImage>,
 
     private bookingService: BookingService,
+    private guestService: GuestService,
   ) {}
 
   async getRentalUnits(
@@ -119,20 +123,51 @@ export class RentalUnitService {
     return result;
   }
 
-  async reserveRentalUnit(reserveRentalUnitInput: ReserveRentalUnitInput) {
+  async reserveRentalUnit(
+    reserveRentalUnitInput: ReserveRentalUnitInput,
+    userId: string,
+  ) {
     const rentalUnit = await this.getRentalUnit(
       reserveRentalUnitInput.id_rental_unit,
     );
+    const guest = await this.guestService.getGuestByUserId(userId);
+
+    if (!guest) {
+      throw new GraphQLError("Can't find guest.", {
+        extensions: {
+          custom: true,
+          code: codes.bad_user_input,
+          status: 400,
+        },
+      });
+    }
+
     if (!rentalUnit) {
-      throw new Error(
+      throw new GraphQLError(
         `No rental unit with id = ${reserveRentalUnitInput.id_rental_unit}`,
+        {
+          extensions: {
+            custom: true,
+            code: codes.bad_user_input,
+            status: 400,
+          },
+        },
       );
     }
     if (
       reserveRentalUnitInput.num_guests > rentalUnit.max_guests ||
       reserveRentalUnitInput.num_guests < 1
     ) {
-      throw new Error("Number of guests exceeds maximum for rental unit.");
+      throw new GraphQLError(
+        "Number of guests exceeds maximum for rental unit.",
+        {
+          extensions: {
+            custom: true,
+            code: codes.bad_user_input,
+            status: 400,
+          },
+        },
+      );
     }
 
     const result = await this.bookingService.createBooking(
@@ -141,6 +176,7 @@ export class RentalUnitService {
       reserveRentalUnitInput.num_guests,
       reserveRentalUnitInput.total_price,
       rentalUnit,
+      guest,
     );
 
     return result;

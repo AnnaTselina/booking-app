@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Between, LessThan, MoreThan, Not, Repository } from "typeorm";
+import { Guest } from "../guest/entities/guest.entity";
 import { RentalUnit } from "../rental-unit/entities/rental-unit.entity";
 import { Booking } from "./entities/booking.entity";
 
@@ -17,6 +18,7 @@ export class BookingService {
     guests: number,
     totalPrice: number,
     rentalUnit: RentalUnit,
+    guest: Guest,
   ) {
     const newBooking = this.bookingRepository.create({
       num_guests: guests,
@@ -24,6 +26,7 @@ export class BookingService {
       end_date: end,
       total_price: totalPrice,
       rental_unit: rentalUnit,
+      guest,
     });
 
     return await this.bookingRepository.save(newBooking);

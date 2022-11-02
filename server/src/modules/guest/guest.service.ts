@@ -14,4 +14,11 @@ export class GuestService {
   async addGuest(user: User) {
     return await this.guestRepository.save({ user });
   }
+
+  async getGuestByUserId(id: string) {
+    return await this.guestRepository
+      .createQueryBuilder("guest")
+      .where({ user: id })
+      .getOne();
+  }
 }

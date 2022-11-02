@@ -5,10 +5,10 @@ declare namespace NodeJS {
   }
 }
 
-declare global {
-  namespace Express {
-    interface Session {
-      user?: User;
-    }
+declare namespace Express {
+  export interface Request {
+    user?: {
+      id: string;
+    };
   }
 }
