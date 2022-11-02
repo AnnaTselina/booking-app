@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field, Int, Float } from "@nestjs/graphql";
 import { GraphQLDateTime } from "graphql-scalars";
 import { RentalUnit } from "src/modules/rental-unit/entities/rental-unit.entity";
+import { Guest } from "src/modules/guest/entities/guest.entity";
 
 @Entity("booking")
 @ObjectType({})
@@ -33,4 +34,8 @@ export class Booking {
   @ManyToOne(() => RentalUnit, (rentalUnit) => rentalUnit.bookings)
   @Field(() => RentalUnit)
   rental_unit: RentalUnit;
+
+  @ManyToOne(() => Guest, (guest) => guest.bookings)
+  @Field(() => Guest)
+  guest: Guest;
 }

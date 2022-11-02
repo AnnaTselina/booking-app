@@ -8,6 +8,7 @@ import {
   sendEmail,
 } from "src/utils/send-email/send-confirmation-email";
 import { compare } from "bcrypt";
+import { GuestService } from "../guest/guest.service";
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,7 @@ export class AuthService {
 
   constructor(
     @Inject("USER_SERVICE") private readonly userService: UserService,
+    private guestService: GuestService,
   ) {
     this.logger = new Logger(AuthService.name);
   }
@@ -53,6 +55,7 @@ export class AuthService {
         ...userDetails,
         confirmed: true,
       });
+      await this.guestService.addGuest(user);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password_hash, ...rest } = user;
 
@@ -110,8 +113,8 @@ export class AuthService {
       });
     }
 
-    await this.userService.updateUser(userId, { confirmed: true });
-
+    const user = await this.userService.updateUser(userId, { confirmed: true });
+    await this.guestService.addGuest(user);
     await redisConfirmationEmails.del(id);
 
     return true;

@@ -7,9 +7,14 @@ import { AuthService } from "./auth.service";
 import { GoogleStartegy } from "./strategies/google/google.strategy";
 import { SessionSerializer } from "./strategies/serialize";
 import { LocalStrategy } from "./strategies/local/local.strategy";
+import { GuestModule } from "../guest/guest.module";
 
 @Module({
-  imports: [UserModule, PassportModule.register({ session: true })],
+  imports: [
+    UserModule,
+    PassportModule.register({ session: true }),
+    GuestModule,
+  ],
   providers: [
     AuthResolver,
     GoogleStartegy,

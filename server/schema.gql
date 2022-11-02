@@ -51,6 +51,19 @@ type RentalUnitAddress {
   country: Country
 }
 
+type User {
+  id: String!
+  email: String!
+  name: String!
+  confirmed: Boolean!
+}
+
+type Guest {
+  id: String!
+  user: User!
+  bookings: [Booking!]!
+}
+
 type Booking {
   id: String!
   num_guests: Int!
@@ -59,6 +72,7 @@ type Booking {
   status: String!
   total_price: Float!
   rental_unit: RentalUnit!
+  guest: Guest!
 }
 
 """
@@ -86,13 +100,6 @@ type RentalUnit {
 type GetRentalUnitAvailabilityResponse {
   start_date: String!
   end_date: String!
-}
-
-type User {
-  id: String!
-  email: String!
-  name: String!
-  confirmed: Boolean!
 }
 
 type Query {
