@@ -9,6 +9,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ApolloDriver } from "@nestjs/apollo";
 import modules from "./modules/modules";
 import { formatGraphqlError } from "./error-handling/format-error-graphql";
+import { SessionEntity } from "./utils/session/session";
 
 @Module({
   imports: [
@@ -45,7 +46,10 @@ import { formatGraphqlError } from "./error-handling/format-error-graphql";
       password: process.env["DB_PASSWORD"],
       database: process.env["DATABASE_NAME"],
       synchronize: true,
-      entities: [`${__dirname}/modules/**/entities/*.entity{.ts,.js}`],
+      entities: [
+        `${__dirname}/modules/**/entities/*.entity{.ts,.js}`,
+        SessionEntity,
+      ],
       subscribers: [`${__dirname}/subscribers/*.subscriber{.ts,.js}`],
     }),
     ...modules,
