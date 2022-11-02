@@ -1,35 +1,29 @@
 import { useState } from "react";
-import LogInOptions from "../log-in-options";
-import Modal from "../modal";
-import SignUpOptions from "../sign-up-options";
+import Authentication from "../authentication";
 import "./styles.scss";
-// import SignUpForm from "../sign-up-form";
-// import SignUpOptions from "../sign-up-options";
 
 const SignedOutPanel = () => {
-  const [logInOrSignUp, setLogInOrSignUp] = useState<"Log in" | "Sign up">("Log in");
-  const [modalOpened, setModalOpened] = useState(false);
-
-  const closeModal = () => {
-    setModalOpened((state) => !state);
-    setLogInOrSignUp("Log in");
-  };
+  const [authenticationActive, setAuthenticationActive] = useState(false);
 
   return (
     <>
       <div className="header-buttons">
-        <button type="button" className="link not-underlined" onClick={closeModal}>
+        <button
+          type="button"
+          className="link not-underlined"
+          onClick={() => setAuthenticationActive(true)}
+        >
           Log in
         </button>
       </div>
 
-      <Modal isOpen={modalOpened} handleClose={closeModal} heading={`${logInOrSignUp}:`}>
-        {logInOrSignUp === "Log in" ? (
-          <LogInOptions google setLogInOrSignUp={setLogInOrSignUp} onSuccessSubmit={closeModal} />
-        ) : (
-          <SignUpOptions google setLogInOrSignUp={setLogInOrSignUp} />
-        )}
-      </Modal>
+      {authenticationActive && (
+        <Authentication
+          closeAuthenticationCallback={() => {
+            setAuthenticationActive(false);
+          }}
+        />
+      )}
     </>
   );
 };
