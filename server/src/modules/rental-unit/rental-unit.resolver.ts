@@ -4,8 +4,16 @@ import { GraphQLError } from "graphql";
 import { codes } from "src/error-handling/format-error-graphql";
 import { LoggedInGuard } from "src/guards/logged-in.guard";
 import { Booking } from "../booking/entities/booking.entity";
-import { GetRentalUnitsInput, ReserveRentalUnitInput } from "./dto/inputs";
+import {
+  AddRentalUnitInput,
+  GetRentalUnitsInput,
+  ReserveRentalUnitInput,
+} from "./dto/inputs";
+import { Amenity } from "./entities/amenity.entity";
+import { Country } from "./entities/country.entity";
 import { RentalUnit } from "./entities/rental-unit.entity";
+import { State } from "./entities/state.entity";
+import { TypeOfPlace } from "./entities/type-of-place.entity";
 import { RentalUnitService } from "./rental-unit.service";
 
 @Resolver()
@@ -62,5 +70,50 @@ export class RentalUnitResolver {
     } catch (e) {
       return e;
     }
+  }
+
+  @Query(() => [TypeOfPlace])
+  async getTypesOfPlaces() {
+    return await this.rentalUnitService.getTypesOfPlaces();
+  }
+
+  @Query(() => [Amenity])
+  async getAmenities() {
+    return await this.rentalUnitService.getAmenities();
+  }
+
+  @Query(() => [Country])
+  async getCountries() {
+    return await this.rentalUnitService.getCountries();
+  }
+
+  @Query(() => [State])
+  async getStates(@Args("id") countryId: string) {
+    const result = await this.rentalUnitService.getStates(countryId);
+    return result?.states || [];
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(LoggedInGuard)
+  async addRentalUnit(
+    @Args("addRentalUnitInput") addRentalUnitInput: AddRentalUnitInput,
+    @Context() context: { req: Express.Request },
+  ) {
+    if (!context.req.user) {
+      return new GraphQLError("Forbidden resource.", {
+        extensions: {
+          custom: true,
+          code: codes.bad_user_input,
+          status: 403,
+        },
+      });
+    }
+
+    await this.rentalUnitService.addRentalUnit(
+      addRentalUnitInput,
+      context.req.user,
+    );
+
+    return true;
   }
 }

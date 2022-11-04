@@ -7,8 +7,14 @@ import {
   IsNotEmpty,
   IsPositive,
   Min,
+  IsInt,
+  IsString,
+  MinLength,
+  MaxLength,
+  IsArray,
 } from "class-validator";
 import { GraphQLDateTime } from "graphql-scalars";
+import { GraphQLUpload, FileUpload } from "graphql-upload";
 
 @ValidatorConstraint({ name: "isBefore", async: false })
 export class IsBeforeConstraint implements ValidatorConstraintInterface {
@@ -58,4 +64,93 @@ export class GetRentalUnitsInput {
 
   @Field(() => String, { nullable: true })
   checkout?: string;
+}
+
+@InputType({})
+export class AddRentalUnitInput {
+  @Field({})
+  @IsNotEmpty()
+  type_of_place_id: string;
+
+  @Field(() => Int)
+  @IsNotEmpty()
+  @IsInt()
+  @Min(0)
+  max_guests: number;
+
+  @Field(() => Int)
+  @IsNotEmpty()
+  @IsInt()
+  @Min(0)
+  num_bedrooms: number;
+
+  @Field(() => Int)
+  @IsNotEmpty()
+  @IsInt()
+  @Min(0)
+  num_beds: number;
+
+  @Field(() => Int)
+  @IsNotEmpty()
+  @IsInt()
+  @Min(0)
+  num_bathrooms: number;
+
+  @Field({})
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(20)
+  @MaxLength(60)
+  title: string;
+
+  @Field({})
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(150)
+  @MaxLength(300)
+  description: string;
+
+  @Field({})
+  @IsNotEmpty()
+  @IsPositive()
+  @Min(1)
+  price: number;
+
+  @Field(() => [String])
+  @IsArray()
+  amenities_ids: string[];
+
+  @Field({})
+  @IsNotEmpty()
+  @IsString()
+  id_country: string;
+
+  @Field({})
+  @IsString()
+  id_state: string;
+
+  @Field({})
+  @IsNotEmpty()
+  @IsString()
+  city: string;
+
+  @Field({})
+  @IsNotEmpty()
+  @IsString()
+  street: string;
+
+  @Field({})
+  @IsNotEmpty()
+  @IsString()
+  zip: string;
+
+  @Field({})
+  @IsNotEmpty()
+  @IsString()
+  apartment: string;
+
+  @Field(() => [GraphQLUpload])
+  @IsNotEmpty()
+  @IsArray()
+  images: FileUpload[];
 }

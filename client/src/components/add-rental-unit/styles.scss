@@ -1,0 +1,324 @@
+@import "../../styles/vars.scss";
+
+.add-rental-unit {
+  height: 100vh;
+  background-color: $colorGrey;
+
+  &__content-box {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    height: 60vh;
+    width: 70%;
+    transform: translate(-50%, 0);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    background-color: $colorMin;
+    padding: 48px;
+    display: flex;
+    animation-name: appearing;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+
+    &-image {
+      flex-basis: 40%;
+
+      img {
+        height: 100%;
+        width: 350px;
+      }
+    }
+    &-form {
+      flex-basis: 60%;
+      padding: 0 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .form {
+        &-heading {
+          font-family: $font1;
+
+          &.centered {
+            margin-top: 40%;
+          }
+        }
+
+        &-paragraph {
+          font-family: $font2;
+        }
+
+        &-button {
+          display: flex;
+          justify-content: space-evenly;
+          margin-top: 10px;
+
+          button {
+            padding: 9px 32px;
+            font-size: 12px;
+            background-color: $colorGrey;
+            border: none;
+            font-family: $font2;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin: 0 10px;
+          }
+
+          &__with-errors {
+            flex-direction: column;
+            align-items: center;
+
+            button {
+              width: fit-content;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &-form {
+    font-family: $font2;
+
+    &__radio-input {
+      margin-bottom: 12px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+
+      input {
+        cursor: pointer;
+        width: 18px;
+        height: 18px;
+      }
+
+      label {
+        padding-left: 12px;
+        cursor: pointer;
+      }
+    }
+
+    &__number-input {
+      font-family: $font2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      label {
+        display: block;
+      }
+
+      input {
+        display: block;
+        padding: 4px;
+        text-align: center;
+        width: 20%;
+        outline: none;
+        border: 1px solid $colorGrey;
+        border-radius: 3px;
+      }
+    }
+  }
+
+  &__amenities {
+    font-family: $font2;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 80%;
+    margin-top: 10px;
+
+    &-item {
+      margin-bottom: 15px;
+      max-width: 50%;
+
+      input {
+        margin-right: 20px;
+        cursor: pointer;
+      }
+
+      label {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__address {
+    font-family: $font2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    &-country,
+    &-state,
+    &-zip,
+    &-apartment {
+      flex-basis: 45%;
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      select {
+        display: block;
+        padding: 8px;
+        width: 100%;
+        cursor: pointer;
+        outline: none;
+        border: 1px solid $colorGrey;
+      }
+
+      input {
+        display: block;
+        width: 100%;
+        outline: none;
+        border: 1px solid $colorGrey;
+        padding: 8px;
+        border-radius: 2px;
+        box-sizing: border-box;
+      }
+    }
+
+    &-city,
+    &-street {
+      flex-basis: 100%;
+      margin-top: 20px;
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      input {
+        display: block;
+        width: 100%;
+        outline: none;
+        border: 1px solid $colorGrey;
+        padding: 8px;
+        border-radius: 2px;
+        box-sizing: border-box;
+      }
+    }
+
+    &-zip,
+    &-apartment {
+      margin-top: 20px;
+    }
+  }
+
+  &__title,
+  &__description,
+  &__price {
+    font-family: $font2;
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input,
+    textarea {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      outline: none;
+      border: 1px solid $colorGrey;
+      padding: 8px;
+      border-radius: 2px;
+    }
+
+    &-help-text {
+      font-size: 10px;
+      margin-top: 4px;
+    }
+  }
+
+  &__price {
+    input {
+      width: 50%;
+    }
+  }
+
+  &__drop-images {
+    height: 100%;
+    margin-top: 24px;
+    font-family: $font2;
+
+    .dropzone {
+      width: 100%;
+      height: 50%;
+      padding: 8px;
+      border: 2px dashed $colorGrey;
+      box-sizing: border-box;
+
+      &.drag-active {
+        border: 2px dashed rgb(200, 165, 119);
+      }
+
+      .btn {
+        padding: 9px 18px;
+        font-size: 12px;
+        background-color: $colorGrey;
+        border: none;
+        font-family: $font2;
+        cursor: pointer;
+        margin: 12px auto 0;
+        display: block;
+      }
+    }
+
+    &-list {
+      width: 100%;
+      padding: 12px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+
+      &-image {
+        width: 70px;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid $colorGrey;
+        margin-bottom: 8px;
+        margin-right: 8px;
+        flex-direction: column;
+
+        &-cancel {
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+
+          button {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+
+            .icon-cancel {
+              &:before {
+                font-size: 12px;
+              }
+            }
+          }
+        }
+      }
+
+      img {
+        max-width: 50px;
+        max-height: 50px;
+        margin-bottom: 16px;
+      }
+    }
+  }
+
+  &__form-error {
+    font-size: 14px;
+    color: $errorColor;
+    min-height: 21px;
+    font-family: $font2;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+}

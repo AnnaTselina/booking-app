@@ -137,3 +137,98 @@ export const LOGIN_MUTATION = gql`
     }
   }
 `;
+
+export const GET_TYPES_OF_PLACES_QUERY = gql`
+  query {
+    getTypesOfPlaces {
+      id
+      name
+    }
+  }
+`;
+
+export const GET_AMENITIES = gql`
+  query {
+    getAmenities {
+      id
+      name
+    }
+  }
+`;
+
+export const GET_COUNTRIES = gql`
+  query {
+    getCountries {
+      id
+      name
+    }
+  }
+`;
+
+export const GET_STATES = gql`
+  query GetStates($countryId: String!) {
+    getStates(id: $countryId) {
+      id
+      name
+    }
+  }
+`;
+
+export const GET_ADD_RENTAL_UNIT_DATA = gql`
+  query {
+    getTypesOfPlaces {
+      id
+      name
+    }
+    getAmenities {
+      id
+      name
+    }
+    getCountries {
+      id
+      name
+    }
+  }
+`;
+
+export const ADD_RENTAL_UNIT_MUTATION = gql`
+  mutation AddRentalUnit(
+    $type_of_place_id: String!
+    $max_guests: Int!
+    $num_bedrooms: Int!
+    $num_beds: Int!
+    $num_bathrooms: Int!
+    $title: String!
+    $description: String!
+    $price: Float!
+    $amenities_ids: [String!]!
+    $id_country: String!
+    $id_state: String!
+    $city: String!
+    $street: String!
+    $zip: String!
+    $apartment: String!
+    $images: [Upload!]!
+  ) {
+    addRentalUnit(
+      addRentalUnitInput: {
+        type_of_place_id: $type_of_place_id
+        max_guests: $max_guests
+        num_bedrooms: $num_bedrooms
+        num_beds: $num_beds
+        num_bathrooms: $num_bathrooms
+        title: $title
+        description: $description
+        price: $price
+        amenities_ids: $amenities_ids
+        id_country: $id_country
+        id_state: $id_state
+        city: $city
+        street: $street
+        zip: $zip
+        apartment: $apartment
+        images: $images
+      }
+    )
+  }
+`;

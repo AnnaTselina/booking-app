@@ -10,7 +10,11 @@ const PrivateRoutes = () => {
   });
 
   if (loading) {
-    return <div>loading</div>;
+    return (
+      <div className="loading">
+        <span className="icon-loading big" />
+      </div>
+    );
   }
   return data?.getUser?.id ? <Outlet /> : <Navigate to={routes.HOME} />;
 };

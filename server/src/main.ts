@@ -6,6 +6,7 @@ import * as passport from "passport";
 import { TypeormStore } from "connect-typeorm/out";
 import { SessionEntity } from "./utils/session/session";
 import { DataSource } from "typeorm";
+import { graphqlUploadExpress } from "graphql-upload";
 
 const mode = process.env["MODE"] || "dev";
 const host = process.env["HOST"] || "localhost";
@@ -20,6 +21,7 @@ async function bootstrap() {
   if (mode === "dev") {
     app.enableCors({ origin: `http://${host}:${devClientPort}` });
   }
+  app.use(graphqlUploadExpress());
   app.useGlobalPipes(new ValidationPipe());
 
   if (sessionSecret) {

@@ -6,11 +6,18 @@ import { RentalUnitImage } from "./entities/rental-unit-image.entity";
 import { Country } from "./entities/country.entity";
 import { State } from "./entities/state.entity";
 import { Amenity } from "./entities/amenity.entity";
-import { ReserveRentalUnitInput } from "./dto/inputs";
+import { AddRentalUnitInput, ReserveRentalUnitInput } from "./dto/inputs";
 import { BookingService } from "../booking/booking.service";
 import { GuestService } from "../guest/guest.service";
 import { GraphQLError } from "graphql";
 import { codes } from "src/error-handling/format-error-graphql";
+import { TypeOfPlace } from "./entities/type-of-place.entity";
+import { FileUpload } from "graphql-upload";
+import { UPLOAD_DIR } from "src/utils/constants";
+import { createWriteStream, unlink } from "fs";
+import { RentalUnitAmenity } from "./entities/rental-unit-amenity.entity";
+import { RentalUnitAddress } from "./entities/rental-unit-address.entity";
+import { HostService } from "../host/host.service";
 
 @Injectable()
 export class RentalUnitService {
@@ -21,8 +28,27 @@ export class RentalUnitService {
     @InjectRepository(RentalUnitImage)
     private rentalUnitImageRepository: Repository<RentalUnitImage>,
 
+    @InjectRepository(Country)
+    private countryRepository: Repository<Country>,
+
+    @InjectRepository(Amenity)
+    private amenityRepository: Repository<Amenity>,
+
+    @InjectRepository(TypeOfPlace)
+    private typeOfPlaceRepository: Repository<TypeOfPlace>,
+
+    @InjectRepository(RentalUnitAmenity)
+    private rentalUnitAmenityRepository: Repository<RentalUnitAmenity>,
+
+    @InjectRepository(RentalUnitAddress)
+    private rentalUnitAddressRepository: Repository<RentalUnitAddress>,
+
+    @InjectRepository(State)
+    private stateRepository: Repository<State>,
+
     private bookingService: BookingService,
     private guestService: GuestService,
+    private hostService: HostService,
   ) {}
 
   async getRentalUnits(
@@ -180,5 +206,155 @@ export class RentalUnitService {
     );
 
     return result;
+  }
+
+  async getTypesOfPlaces() {
+    return await this.typeOfPlaceRepository.find();
+  }
+
+  async getAmenities() {
+    return this.amenityRepository.find();
+  }
+
+  async getCountries() {
+    return this.countryRepository.find();
+  }
+
+  async getCountryById(id: string) {
+    return this.countryRepository.findOneByOrFail({ id });
+  }
+
+  async getStates(countryId: string) {
+    return this.countryRepository
+      .createQueryBuilder("country")
+      .where({ id: countryId })
+      .leftJoinAndMapMany(
+        "country.states",
+        State,
+        "state",
+        "state.countryId = country.id",
+      )
+      .getOne();
+  }
+
+  async getStateById(id: string) {
+    return this.stateRepository.findOneByOrFail({ id });
+  }
+
+  async uploadImages(images: FileUpload[], rentalUnit: RentalUnit) {
+    images.forEach(async (item, index) => {
+      const imageInfo = await item;
+      const { createReadStream, filename } = imageInfo;
+      const stream = createReadStream();
+      const newImageName = `${rentalUnit.id}-image-${index}.${
+        filename.split(".")[1]
+      }`;
+      const uploadPath = `${UPLOAD_DIR}/${newImageName}`;
+
+      await new Promise((_, reject) => {
+        const writeStream = createWriteStream(uploadPath);
+        writeStream.on("finish", async () => {
+          const imageInRepo = this.rentalUnitImageRepository.create({
+            rental_unit: rentalUnit,
+            image_path: `/images/${newImageName}`,
+          });
+          await this.rentalUnitImageRepository.save(imageInRepo);
+        });
+        writeStream.on("error", (error) => {
+          unlink(uploadPath, () => {
+            reject(error);
+          });
+        });
+        stream.on("error", (error) => writeStream.destroy(error));
+        stream.pipe(writeStream);
+      });
+    });
+  }
+
+  async addRentalUnit(
+    rentalUnitInput: AddRentalUnitInput,
+    user: { id: string; email: string },
+  ) {
+    const {
+      type_of_place_id,
+      max_guests,
+      num_bedrooms,
+      num_beds,
+      num_bathrooms,
+      title,
+      description,
+      price,
+      amenities_ids,
+      id_country,
+      id_state,
+      city,
+      street,
+      zip,
+      apartment,
+      images,
+    } = rentalUnitInput;
+
+    const typeOfPlace = await this.typeOfPlaceRepository.findOneOrFail({
+      where: { id: type_of_place_id },
+    });
+
+    const allAmenities = await this.getAmenities();
+
+    const rentalUnitAmenitiesList = allAmenities.filter((amenity) =>
+      amenities_ids.includes(amenity.id),
+    );
+
+    const rentalUnitAddress = this.rentalUnitAddressRepository.create({
+      city,
+      street,
+      zip,
+      apartment,
+    });
+
+    const country = await this.getCountryById(id_country);
+    rentalUnitAddress.country = country;
+
+    const savedRentalUnitAddress = await this.rentalUnitAddressRepository.save(
+      rentalUnitAddress,
+    );
+
+    if (id_state) {
+      const state = await this.getStateById(id_state);
+      rentalUnitAddress.state = state;
+    }
+
+    const newRentalUnit = this.rentalUnitRepository.create({
+      max_guests,
+      num_bedrooms,
+      num_beds,
+      num_bathrooms,
+      title,
+      description,
+      price,
+      type_of_place: typeOfPlace,
+      address: savedRentalUnitAddress,
+    });
+
+    const savedNewRentalUnit = await this.rentalUnitRepository.save(
+      newRentalUnit,
+    );
+
+    if (savedNewRentalUnit) {
+      rentalUnitAmenitiesList.forEach((amenity) => {
+        const rentalUnitAmenityRecord = this.rentalUnitAmenityRepository.create(
+          {
+            rental_unit: savedNewRentalUnit,
+            amenity,
+          },
+        );
+        this.rentalUnitAmenityRepository.save(rentalUnitAmenityRecord);
+      });
+
+      await this.hostService.assignRentalUnitToHost(user, savedNewRentalUnit);
+
+      await this.uploadImages(images, savedNewRentalUnit);
+    }
+
+    return savedNewRentalUnit;
   }
 }

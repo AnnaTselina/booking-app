@@ -98,6 +98,18 @@ type RentalUnit {
   bookings: [Booking!]!
 }
 
+type Host {
+  id: String!
+  user: User!
+  rental_units: [HostRentalUnits!]
+}
+
+type HostRentalUnits {
+  id: String!
+  host: Host
+  rental_unit: RentalUnit!
+}
+
 type GetRentalUnitAvailabilityResponse {
   start_date: String!
   end_date: String!
@@ -106,6 +118,10 @@ type GetRentalUnitAvailabilityResponse {
 type Query {
   getRentalUnits(getRentalUnitsInput: GetRentalUnitsInput!): [RentalUnit!]!
   getRentalUnit(id: String!): RentalUnit
+  getTypesOfPlaces: [TypeOfPlace!]!
+  getAmenities: [Amenity!]!
+  getCountries: [Country!]!
+  getStates(id: String!): [State!]!
   getRentalUnitAvailability(id: String!): [GetRentalUnitAvailabilityResponse!]!
   getUser: User!
 }
@@ -118,6 +134,7 @@ input GetRentalUnitsInput {
 
 type Mutation {
   reserveRentalUnit(reserveRentalUnitInput: ReserveRentalUnitInput!): Booking!
+  addRentalUnit(addRentalUnitInput: AddRentalUnitInput!): Boolean!
   signUp(signUpInput: SignUpInput!): Boolean!
   confirmUser(id: String!): Boolean!
   login(loginInput: LoginInput!): User!
@@ -131,6 +148,28 @@ input ReserveRentalUnitInput {
   total_price: Float!
   end_date: DateTime!
 }
+
+input AddRentalUnitInput {
+  type_of_place_id: String!
+  max_guests: Int!
+  num_bedrooms: Int!
+  num_beds: Int!
+  num_bathrooms: Int!
+  title: String!
+  description: String!
+  price: Float!
+  amenities_ids: [String!]!
+  id_country: String!
+  id_state: String!
+  city: String!
+  street: String!
+  zip: String!
+  apartment: String!
+  images: [Upload!]!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input SignUpInput {
   email: String!

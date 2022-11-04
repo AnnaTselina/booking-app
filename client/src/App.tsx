@@ -10,6 +10,7 @@ import Apartment from "./components/apartment";
 import PageNotFound from "./page-containers/page-not-found";
 import ConfirmUser from "./components/confirm-user";
 import PrivateRoutes from "./components/private-route";
+import AddRentalUnit from "./components/add-rental-unit";
 
 const App = () => (
   <ApolloProvider client={client}>
@@ -36,7 +37,7 @@ const App = () => (
 
           {/* Protected routes */}
           <Route path="/" element={<PrivateRoutes />}>
-            <Route path={routes.ADD_RENTAL_UNIT} element={<div>Add rental unit</div>} />
+            <Route path={routes.ADD_RENTAL_UNIT} element={<AddRentalUnit />} />
           </Route>
           <Route path="/*" element={<PageNotFound />} />
         </Routes>

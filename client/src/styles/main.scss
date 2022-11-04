@@ -78,6 +78,17 @@ body {
   }
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  .icon-loading {
+    display: block;
+  }
+}
+
 h1,
 h2,
 h3,
