@@ -1,7 +1,9 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { userVar } from "../../apollo-client";
 import { GET_USER, LOGOUT_MUTATION } from "../../queries-graphql";
+import routes from "../../utils/routes";
 import "./styles.scss";
 
 const SignedInPanel = () => {
@@ -19,6 +21,12 @@ const SignedInPanel = () => {
 
   return (
     <div className="account-tooltip">
+      {data?.getUser && !data.getUser.is_host && (
+        <NavLink type="button" className="button" to={routes.ADD_RENTAL_UNIT}>
+          Become a host
+        </NavLink>
+      )}
+
       <button
         type="button"
         className="account-tooltip-open-button"

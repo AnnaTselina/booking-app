@@ -56,6 +56,7 @@ type User {
   email: String!
   name: String!
   confirmed: Boolean!
+  is_host: Boolean!
 }
 
 type Guest {

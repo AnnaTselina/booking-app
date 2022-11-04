@@ -22,4 +22,8 @@ export class User {
   @Column({ default: false })
   @Field(() => Boolean)
   confirmed: boolean;
+
+  @Column({ default: false })
+  @Field(() => Boolean)
+  is_host: boolean;
 }

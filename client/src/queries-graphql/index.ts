@@ -113,6 +113,7 @@ export const GET_USER = gql`
     getUser {
       id
       email
+      is_host
     }
   }
 `;
