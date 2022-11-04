@@ -107,6 +107,10 @@ a {
     text-decoration: underline;
   }
 
+  &.medium {
+    font-size: 14px;
+  }
+
   &.button {
     background-color: $colorGrey;
     font-size: 12px;
@@ -119,6 +123,9 @@ p,
 button {
   &.small {
     font-size: 12px;
+  }
+  &.medium {
+    font-size: 14px;
   }
 }
 

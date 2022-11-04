@@ -145,7 +145,6 @@ export class AddRentalUnitInput {
   zip: string;
 
   @Field({})
-  @IsNotEmpty()
   @IsString()
   apartment: string;
 

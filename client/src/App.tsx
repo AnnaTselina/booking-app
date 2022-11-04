@@ -38,6 +38,9 @@ const App = () => (
           {/* Protected routes */}
           <Route path="/" element={<PrivateRoutes />}>
             <Route path={routes.ADD_RENTAL_UNIT} element={<AddRentalUnit />} />
+            <Route path="/" element={<PrivateRoutes host />}>
+              <Route path={routes.BOOKING_REQUESTS} element={<div>booking requests</div>} />
+            </Route>
           </Route>
           <Route path="/*" element={<PageNotFound />} />
         </Routes>

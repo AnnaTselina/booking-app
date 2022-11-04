@@ -1,23 +1,15 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { userVar } from "../../apollo-client";
-import { GET_USER, LOGOUT_MUTATION } from "../../queries-graphql";
+import { GET_USER } from "../../queries-graphql";
 import routes from "../../utils/routes";
+import UserTooltip from "../user-tooltip";
 import "./styles.scss";
 
 const SignedInPanel = () => {
   const { data } = useQuery(GET_USER);
 
   const [tooltipOpened, setTooltipOpened] = useState(false);
-
-  const [logout] = useMutation(LOGOUT_MUTATION, {
-    update(_, result) {
-      if (result.data.logout) {
-        userVar(null);
-      }
-    },
-  });
 
   return (
     <div className="account-tooltip">
@@ -37,21 +29,7 @@ const SignedInPanel = () => {
         <span className="icon-person" />
       </button>
 
-      {tooltipOpened && (
-        <div className="account-tooltip-content">
-          <div className="arrow" />
-          <p>{data.getUser.email}</p>
-          <button
-            type="button"
-            className="link"
-            onClick={() => {
-              logout();
-            }}
-          >
-            Log out
-          </button>
-        </div>
-      )}
+      {tooltipOpened && <UserTooltip />}
     </div>
   );
 };
