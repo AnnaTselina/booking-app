@@ -1,9 +1,11 @@
-import { useMutation, useReactiveVar } from "@apollo/client";
+import { useReactiveVar } from "@apollo/client";
 import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { userVar } from "../../apollo-client";
-import { RESERVE_RENTAL_UNIT_MUTATION } from "../../queries-graphql";
+import routes from "../../utils/routes";
 import Authentication from "../authentication";
 import DateRangePicker from "../date-range-pickers";
+import { parseDateToString } from "../../utils/helpers/parse-dates";
 import "./styles.scss";
 
 interface IBookPanel {
@@ -26,7 +28,7 @@ const BookPanel = (props: IBookPanel) => {
   const [numGuests, setNumGuests] = useState(1);
   const [authenticationActive, setAuthenticationActive] = useState(false);
 
-  const [reserveRentalUnit] = useMutation(RESERVE_RENTAL_UNIT_MUTATION);
+  const navigate = useNavigate();
 
   const totalNights = useMemo(() => {
     if (dates.checkIn && dates.checkOut) {
@@ -62,15 +64,13 @@ const BookPanel = (props: IBookPanel) => {
 
     if (userId) {
       if (dates.checkIn && dates.checkOut && numGuests && totalNights && totalPrice) {
-        reserveRentalUnit({
-          variables: {
-            idRentalUnit,
-            numGuests,
-            totalPrice,
-            startDate: dates.checkIn,
-            endDate: dates.checkOut,
-          },
-        });
+        navigate(
+          `${
+            routes.RESERVE
+          }?rental-unit=${idRentalUnit}&guests=${numGuests}&start=${parseDateToString(
+            dates.checkIn,
+          )}&end=${parseDateToString(dates.checkOut)}`,
+        );
       }
     } else {
       setAuthenticationActive(true);

@@ -3,7 +3,7 @@ import "./styles.scss";
 import { useNavigate } from "react-router-dom";
 import routes from "../../utils/routes";
 import DateRangePicker from "../date-range-pickers";
-import parseDate from "../../utils/helpers";
+import { parseDateToString } from "../../utils/helpers/parse-dates";
 
 interface SearchBarProps {
   className?: string;
@@ -28,9 +28,9 @@ const SearchBar = (props: SearchBarProps) => {
     }
 
     if (dates.checkIn && dates.checkOut) {
-      route += `${destination ? "&" : ""}checkin=${parseDate(dates.checkIn)}&checkout=${parseDate(
-        dates.checkOut,
-      )}`;
+      route += `${destination ? "&" : ""}checkin=${parseDateToString(
+        dates.checkIn,
+      )}&checkout=${parseDateToString(dates.checkOut)}`;
     }
 
     navigate(route);

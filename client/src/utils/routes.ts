@@ -5,6 +5,7 @@ const routes = {
   ADD_RENTAL_UNIT: "/add-rental-unit",
   APARTMENT: "/apartment",
   BOOKING_REQUESTS: "/booking-requests",
+  RESERVE: "/reserve",
 };
 
 export default routes;

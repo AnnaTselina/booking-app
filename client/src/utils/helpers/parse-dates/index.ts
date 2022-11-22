@@ -1,4 +1,4 @@
-const parseDate = (date: Date) => {
+export const parseDateToString = (date: Date) => {
   const month = (date.getMonth() + 1).toString();
   const day = date.getDate().toString();
 
@@ -7,4 +7,4 @@ const parseDate = (date: Date) => {
   }`;
 };
 
-export default parseDate;
+export const parseStringToDate = () => {};
