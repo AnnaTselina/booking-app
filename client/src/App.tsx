@@ -11,11 +11,13 @@ import PageNotFound from "./page-containers/page-not-found";
 import ConfirmUser from "./components/confirm-user";
 import PrivateRoutes from "./components/private-route";
 import AddRentalUnit from "./components/add-rental-unit";
+import ScrollToTop from "./components/scroll-to-top";
 
 const App = () => (
   <ApolloProvider client={client}>
     <BrowserRouter>
       <Header />
+      <ScrollToTop />
       <div className="app-content">
         <Routes>
           <Route path={routes.HOME} element={<HomePageContainer />} />
