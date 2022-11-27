@@ -32,16 +32,6 @@
     &-bottom {
       display: flex;
       justify-content: flex-end;
-
-      .icon-star-full {
-        position: absolute;
-        transform: translate(2px, -1px);
-
-        &:before {
-          color: $errorColor;
-          font-size: 14px;
-        }
-      }
     }
   }
 }

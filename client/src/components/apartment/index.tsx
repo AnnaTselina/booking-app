@@ -124,7 +124,7 @@ const Apartment = () => {
               </div>
             </div>
           ) : (
-            <div className="apartment__no-results">Sorry, there is no such apartment.</div>
+            <div className="content-centered">Sorry, there is no such apartment.</div>
           )}
         </div>
       )}

@@ -7,6 +7,8 @@ import Authentication from "../authentication";
 import DateRangePicker from "../date-range-pickers";
 import { parseDateToString } from "../../utils/helpers/parse-dates";
 import "./styles.scss";
+import { getTotalNights, getTotalPrice } from "../../utils/helpers/calculate-reservation-data";
+import ReservationDetails from "../reservation-details";
 
 interface IBookPanel {
   maxGuests: number;
@@ -30,22 +32,12 @@ const BookPanel = (props: IBookPanel) => {
 
   const navigate = useNavigate();
 
-  const totalNights = useMemo(() => {
-    if (dates.checkIn && dates.checkOut) {
-      const difference = dates.checkOut.getTime() - dates.checkIn.getTime();
-      const totalDays = Math.ceil(difference / (1000 * 3600 * 24));
-      return totalDays;
-    }
-    return 0;
-  }, [dates]);
+  const totalNights = useMemo(() => getTotalNights(dates), [dates]);
 
-  const totalPrice = useMemo(() => {
-    if (totalNights && pricePerNight) {
-      return totalNights * pricePerNight;
-    }
-
-    return 0;
-  }, [totalNights, pricePerNight]);
+  const totalPrice = useMemo(
+    () => getTotalPrice(totalNights, pricePerNight),
+    [totalNights, pricePerNight],
+  );
 
   const handleNumGuestsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (Number(e.target.value)) {
@@ -99,35 +91,11 @@ const BookPanel = (props: IBookPanel) => {
             />
           </div>
 
-          <table className="bookpanel-box__price-calculations">
-            <tbody>
-              <tr>
-                <td>
-                  <b>Price per night:</b>
-                </td>
-                <td>
-                  <b>${pricePerNight}</b>
-                </td>
-              </tr>
-              <tr className={totalNights ? "" : "passive"}>
-                <td>
-                  <b>Total nights:</b>
-                </td>
-                <td>
-                  <b>{totalNights}</b>
-                </td>
-              </tr>
-
-              <tr className={totalNights ? "" : "passive"}>
-                <td>
-                  <b>Total price:</b>
-                </td>
-                <td>
-                  <b>${totalPrice}</b>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <ReservationDetails
+            pricePerNight={pricePerNight}
+            totalNights={totalNights}
+            totalPrice={totalPrice}
+          />
 
           <button
             type="submit"

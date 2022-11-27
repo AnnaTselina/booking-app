@@ -10,6 +10,16 @@
   height: 94vh;
 }
 
+.content-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  top: 40%;
+  width: 100%;
+}
+
 [class^="icon-"],
 [class*=" icon-"] {
   &:before {
@@ -145,6 +155,18 @@ button {
 
     &.not-underlined {
       text-decoration: none;
+    }
+  }
+}
+
+.rating {
+  .icon-star-full {
+    position: absolute;
+    transform: translate(2px, -2px);
+
+    &:before {
+      color: $errorColor;
+      font-size: 14px;
     }
   }
 }

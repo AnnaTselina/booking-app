@@ -1,0 +1,28 @@
+@import "../../styles/vars.scss";
+
+.reservation-details {
+  width: 100%;
+
+  tr {
+    height: 40px;
+
+    &.passive {
+      color: $darkGrey;
+    }
+  }
+
+  td {
+    &:last-of-type {
+      text-align: end;
+    }
+  }
+
+  &.big {
+    font-size: 18px;
+    margin-top: 40px;
+
+    tr {
+      height: 50px;
+    }
+  }
+}

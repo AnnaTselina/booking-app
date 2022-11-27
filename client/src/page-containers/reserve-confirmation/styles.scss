@@ -1,0 +1,60 @@
+@import "../../styles/vars.scss";
+
+.reserve-confirmation {
+  padding: 0 28px;
+  max-width: 1320px;
+  margin: 40px auto;
+
+  form {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__description {
+    flex-basis: 50%;
+
+    &-confirm {
+      width: 100%;
+      background-color: $secondaryButtonColor;
+      border: none;
+      outline: none;
+      font-family: "messina_sans";
+      margin-top: 28px;
+      font-size: 20px;
+      padding: 14px 0;
+      cursor: pointer;
+    }
+  }
+
+  &__loading {
+    flex-basis: 60%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+    span {
+      display: block;
+    }
+  }
+
+  &__image {
+    flex-basis: 40%;
+
+    img {
+      width: 100%;
+    }
+
+    &-desc {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 14px;
+
+      &:nth-child(2) {
+        margin-right: 15px;
+        font-size: 18px;
+      }
+    }
+  }
+}

@@ -12,6 +12,7 @@ import ConfirmUser from "./components/confirm-user";
 import PrivateRoutes from "./components/private-route";
 import AddRentalUnit from "./components/add-rental-unit";
 import ScrollToTop from "./components/scroll-to-top";
+import ReserveConfirmationContainer from "./page-containers/reserve-confirmation";
 
 const App = () => (
   <ApolloProvider client={client}>
@@ -43,6 +44,7 @@ const App = () => (
             <Route path="/" element={<PrivateRoutes host />}>
               <Route path={routes.BOOKING_REQUESTS} element={<div>booking requests</div>} />
             </Route>
+            <Route path={routes.RESERVE} element={<ReserveConfirmationContainer />} />
           </Route>
           <Route path="/*" element={<PageNotFound />} />
         </Routes>

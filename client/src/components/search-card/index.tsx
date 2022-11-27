@@ -26,7 +26,7 @@ const SearchCard = (props: { rentalUnit: IRentalUnit }) => {
           </div>
           <div className="search-card__info-bottom">
             {rentalUnit.total_rating !== null && (
-              <p>
+              <p className="rating">
                 {rentalUnit.total_rating}
                 <span className="icon-star-full" />
               </p>

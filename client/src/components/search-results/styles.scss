@@ -17,5 +17,8 @@
   &-loading {
     position: absolute;
     top: 40%;
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 }
