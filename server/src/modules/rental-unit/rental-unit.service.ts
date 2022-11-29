@@ -196,6 +196,25 @@ export class RentalUnitService {
       );
     }
 
+    const available = await this.bookingService.checkIfRentalUnitAvailablable(
+      rentalUnit,
+      reserveRentalUnitInput.start_date,
+      reserveRentalUnitInput.end_date,
+    );
+
+    if (!available) {
+      throw new GraphQLError(
+        "Rental unit is not available during requested dates.",
+        {
+          extensions: {
+            custom: true,
+            code: codes.bad_user_input,
+            status: 400,
+          },
+        },
+      );
+    }
+
     const result = await this.bookingService.createBooking(
       reserveRentalUnitInput.start_date,
       reserveRentalUnitInput.end_date,

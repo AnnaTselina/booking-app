@@ -68,4 +68,40 @@ export class BookingService {
 
     return result.map((booking) => booking.rental_unit.id);
   }
+
+  async checkIfRentalUnitAvailablable(
+    rentalUnit: RentalUnit,
+    checkIn: Date,
+    checkOut: Date,
+  ) {
+    const result = await this.bookingRepository
+      .createQueryBuilder("booking")
+      .where({
+        rental_unit: rentalUnit,
+      })
+      .where({
+        start_date: Between(checkIn, checkOut),
+      })
+      .andWhere({
+        start_date: Not(checkOut),
+      })
+      .orWhere({
+        end_date: Between(checkIn, checkOut),
+      })
+      .andWhere({
+        end_date: Not(checkIn),
+      })
+      .orWhere({
+        start_date: LessThan(checkIn),
+        end_date: MoreThan(checkOut),
+      })
+      .orWhere({
+        start_date: MoreThan(checkIn),
+        end_date: LessThan(checkOut),
+      })
+      .innerJoinAndSelect("booking.rental_unit", "rental-unit")
+      .getOne();
+
+    return !result;
+  }
 }
