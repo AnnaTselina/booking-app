@@ -70,14 +70,14 @@ export class BookingService {
   }
 
   async checkIfRentalUnitAvailablable(
-    rentalUnit: RentalUnit,
+    rentalUnitId: string,
     checkIn: Date,
     checkOut: Date,
   ) {
     const result = await this.bookingRepository
       .createQueryBuilder("booking")
       .where({
-        rental_unit: rentalUnit,
+        rental_unit: rentalUnitId,
       })
       .where({
         start_date: Between(checkIn, checkOut),

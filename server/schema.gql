@@ -123,6 +123,7 @@ type Query {
   getCountries: [Country!]!
   getStates(id: String!): [State!]!
   getRentalUnitAvailability(id: String!): [GetRentalUnitAvailabilityResponse!]!
+  checkIfRentalUnitAvailable(rentalUnitAvailabilityInput: RentalUnitAvailabilityInput!): Boolean!
   getUser: User!
 }
 
@@ -130,6 +131,12 @@ input GetRentalUnitsInput {
   destination: String
   checkin: String
   checkout: String
+}
+
+input RentalUnitAvailabilityInput {
+  id_rental_unit: String!
+  start_date: DateTime!
+  end_date: DateTime!
 }
 
 type Mutation {

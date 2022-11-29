@@ -24,6 +24,12 @@
       padding: 14px 0;
       cursor: pointer;
     }
+
+    &-error {
+      display: flex;
+      justify-content: center;
+      color: $errorColor;
+    }
   }
 
   &__loading {

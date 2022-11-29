@@ -197,7 +197,7 @@ export class RentalUnitService {
     }
 
     const available = await this.bookingService.checkIfRentalUnitAvailablable(
-      rentalUnit,
+      rentalUnit.id,
       reserveRentalUnitInput.start_date,
       reserveRentalUnitInput.end_date,
     );

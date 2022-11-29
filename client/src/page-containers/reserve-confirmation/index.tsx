@@ -1,7 +1,10 @@
-import { useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { NavLink } from "react-router-dom";
 import ReservationInfo from "../../components/reservation-info";
-import { RESERVE_RENTAL_UNIT_MUTATION } from "../../queries-graphql";
+import {
+  CHECK_RENTAL_UNIT_AVAILABILITY,
+  RESERVE_RENTAL_UNIT_MUTATION,
+} from "../../queries-graphql";
 import routes from "../../utils/routes";
 import "./styles.scss";
 import getReserveConfirmationData from "./utils/data";
@@ -27,14 +30,31 @@ const ReserveConfirmationContainer = () => {
   const [reserveRentalUnit, { loading: reserveLoading, data: reserveData, error: reserveError }] =
     useMutation(RESERVE_RENTAL_UNIT_MUTATION);
 
-  const reserve = () => {
-    reserveRentalUnit({
+  const [checkRentalUnitAvailability, { data: availabilityData }] = useLazyQuery(
+    CHECK_RENTAL_UNIT_AVAILABILITY,
+    {
       variables: {
-        idRentalUnit: data.rentalUnitId,
-        numGuests: data.guests,
-        totalPrice: data.totalPrice,
-        startDate: data.checkIn,
-        endDate: data.checkOut,
+        rentalUnitId: data.rentalUnitId,
+        checkIn: data.checkIn,
+        checkOut: data.checkOut,
+      },
+    },
+  );
+
+  const reserve = () => {
+    checkRentalUnitAvailability({
+      onCompleted: (availability) => {
+        if (availability.checkIfRentalUnitAvailable) {
+          reserveRentalUnit({
+            variables: {
+              idRentalUnit: data.rentalUnitId,
+              numGuests: data.guests,
+              totalPrice: data.totalPrice,
+              startDate: data.checkIn,
+              endDate: data.checkOut,
+            },
+          });
+        }
       },
     });
   };
@@ -81,7 +101,11 @@ const ReserveConfirmationContainer = () => {
     <div>
       {data && !reserveLoading && !reserveData && !reserveError && (
         <div className="reserve-confirmation">
-          <ReservationInfo {...data} reserve={reserve} />
+          <ReservationInfo
+            {...data}
+            reserve={reserve}
+            available={availabilityData ? availabilityData.checkIfRentalUnitAvailable : true}
+          />
         </div>
       )}
       {reserveData?.reserveRentalUnit && (

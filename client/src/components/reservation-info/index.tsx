@@ -5,6 +5,8 @@ import { SERVER_ROUTE } from "../../utils/constants";
 import ReservationDetails from "../reservation-details";
 import routes from "../../utils/routes";
 
+const NOT_AVAILABLE_ERROR = "Sorry! Apartment is not available during requested dates.";
+
 interface IReservationInfoProps {
   rentalUnitData: IRentalUnit;
   checkIn: Date;
@@ -12,10 +14,11 @@ interface IReservationInfoProps {
   totalNights: number;
   totalPrice: number;
   reserve: () => void;
+  available: boolean;
 }
 
 const ReservationInfo = (props: IReservationInfoProps) => {
-  const { rentalUnitData, checkIn, checkOut, totalNights, totalPrice, reserve } = props;
+  const { rentalUnitData, checkIn, checkOut, totalNights, totalPrice, reserve, available } = props;
 
   return (
     <form>
@@ -32,17 +35,20 @@ const ReservationInfo = (props: IReservationInfoProps) => {
           totalPrice={totalPrice}
           variant="big"
         />
-
-        <button
-          type="submit"
-          className="reserve-confirmation__description-confirm"
-          onClick={(e: React.SyntheticEvent) => {
-            e.preventDefault();
-            reserve();
-          }}
-        >
-          Confirm reservation
-        </button>
+        {available ? (
+          <button
+            type="submit"
+            className="reserve-confirmation__description-confirm"
+            onClick={(e: React.SyntheticEvent) => {
+              e.preventDefault();
+              reserve();
+            }}
+          >
+            Confirm reservation
+          </button>
+        ) : (
+          <p className="reserve-confirmation__description-error">{NOT_AVAILABLE_ERROR}</p>
+        )}
       </div>
 
       <div className="reserve-confirmation__image">

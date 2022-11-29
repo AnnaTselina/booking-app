@@ -232,3 +232,19 @@ export const ADD_RENTAL_UNIT_MUTATION = gql`
     )
   }
 `;
+
+export const CHECK_RENTAL_UNIT_AVAILABILITY = gql`
+  query CheckRentalUnitAvailability(
+    $rentalUnitId: String!
+    $checkIn: DateTime!
+    $checkOut: DateTime!
+  ) {
+    checkIfRentalUnitAvailable(
+      rentalUnitAvailabilityInput: {
+        id_rental_unit: $rentalUnitId
+        start_date: $checkIn
+        end_date: $checkOut
+      }
+    )
+  }
+`;
