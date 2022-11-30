@@ -3,10 +3,11 @@ import { ObjectType, Field, Int, Float } from "@nestjs/graphql";
 import { GraphQLDateTime } from "graphql-scalars";
 import { RentalUnit } from "src/modules/rental-unit/entities/rental-unit.entity";
 import { Guest } from "src/modules/guest/entities/guest.entity";
+import { IBooking } from "src/types";
 
 @Entity("booking")
 @ObjectType({})
-export class Booking {
+export class Booking implements IBooking {
   @PrimaryGeneratedColumn("uuid")
   @Field()
   id: string;

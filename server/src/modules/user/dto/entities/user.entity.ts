@@ -1,9 +1,10 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field } from "@nestjs/graphql";
+import { IUser } from "src/types";
 
 @Entity("user")
 @ObjectType({})
-export class User {
+export class User implements IUser {
   @PrimaryGeneratedColumn("uuid")
   @Field()
   id: string;

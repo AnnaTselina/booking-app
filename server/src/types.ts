@@ -54,3 +54,41 @@ export interface IState {
   id: string;
   name: string;
 }
+
+export interface IUser {
+  id: string;
+  email: string;
+  name: string;
+  password_hash: string;
+  confirmed: boolean;
+  is_host: boolean;
+}
+
+export interface IGuest {
+  id: string;
+  user: IUser;
+  bookings: [IBooking];
+}
+
+export interface IBooking {
+  id: string;
+  num_guests: number;
+  start_date: Date;
+  end_date: Date;
+  status: string;
+  total_price: number;
+  rental_unit: IRentalUnit;
+  guest: IGuest;
+}
+
+export interface IHost {
+  id: string;
+  user: IUser;
+  rental_units?: IHostRentalUnits[];
+}
+
+export interface IHostRentalUnits {
+  id: string;
+  host: IHost;
+  rental_unit: IRentalUnit;
+}

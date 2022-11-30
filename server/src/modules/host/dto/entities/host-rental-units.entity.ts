@@ -8,10 +8,11 @@ import {
 import { ObjectType, Field } from "@nestjs/graphql";
 import { Host } from "./host.entity";
 import { RentalUnit } from "src/modules/rental-unit/entities/rental-unit.entity";
+import { IHostRentalUnits } from "src/types";
 
 @Entity("host-rental-units")
 @ObjectType({})
-export class HostRentalUnits {
+export class HostRentalUnits implements IHostRentalUnits {
   @PrimaryGeneratedColumn("uuid")
   @Field()
   id: string;
