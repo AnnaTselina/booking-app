@@ -14,8 +14,8 @@ export class User implements IUser {
   email: string;
 
   @Column({ nullable: true })
-  @Field()
-  name: string;
+  @Field({ nullable: true })
+  name?: string;
 
   @Column({ nullable: true })
   password_hash: string;

@@ -13,7 +13,7 @@ import PrivateRoutes from "./components/private-route";
 import AddRentalUnit from "./components/add-rental-unit";
 import ScrollToTop from "./components/scroll-to-top";
 import ReserveConfirmationContainer from "./page-containers/reserve-confirmation";
-import HostBookings from "./page-containers/host-bookings";
+import HostBookingsContainer from "./page-containers/host-bookings";
 
 const App = () => (
   <ApolloProvider client={client}>
@@ -43,7 +43,7 @@ const App = () => (
           <Route path="/" element={<PrivateRoutes />}>
             <Route path={routes.ADD_RENTAL_UNIT} element={<AddRentalUnit />} />
             <Route path="/" element={<PrivateRoutes host />}>
-              <Route path={routes.HOST_BOOKINGS} element={<HostBookings />} />
+              <Route path={routes.HOST_BOOKINGS} element={<HostBookingsContainer />} />
             </Route>
             <Route path={routes.RESERVE} element={<ReserveConfirmationContainer />} />
           </Route>

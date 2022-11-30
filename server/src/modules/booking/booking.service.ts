@@ -2,7 +2,9 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Between, In, LessThan, MoreThan, Not, Repository } from "typeorm";
 import { Guest } from "../guest/entities/guest.entity";
+import { RentalUnitImage } from "../rental-unit/entities/rental-unit-image.entity";
 import { RentalUnit } from "../rental-unit/entities/rental-unit.entity";
+import { User } from "../user/dto/entities/user.entity";
 import { Booking } from "./entities/booking.entity";
 
 @Injectable()
@@ -106,10 +108,31 @@ export class BookingService {
   }
 
   async getBookingsOfRentalUnits(rentalUnits: string[]) {
-    return await this.bookingRepository.find({
-      where: {
-        rental_unit: In(rentalUnits),
-      },
-    });
+    const result = await this.bookingRepository
+      .createQueryBuilder("booking")
+      .where({ rental_unit: In(rentalUnits) })
+      .innerJoin("booking.rental_unit", "rental-unit")
+      .leftJoinAndMapMany(
+        "rental-unit.images",
+        RentalUnitImage,
+        "rental-unit-image",
+        "rental-unit-image.rentalUnitId = rental-unit.id",
+      )
+      .innerJoin("booking.guest", "guest")
+      .leftJoinAndMapOne("guest.user", User, "user", "guest.userId = user.id")
+      .select([
+        "booking",
+        "booking.rental_unit",
+        "booking.guest",
+        "rental-unit",
+        "rental-unit-image",
+        "guest",
+        "user",
+      ])
+      .getMany();
+
+    console.log(result);
+
+    return result;
   }
 }

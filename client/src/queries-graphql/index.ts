@@ -257,6 +257,21 @@ export const GET_HOST_BOOKINGS = gql`
       total_price
       start_date
       end_date
+      rental_unit {
+        id
+        title
+        images {
+          image_path
+        }
+      }
+      guest {
+        id
+        user {
+          id
+          email
+          name
+        }
+      }
     }
   }
 `;

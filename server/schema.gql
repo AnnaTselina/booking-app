@@ -54,7 +54,7 @@ type RentalUnitAddress {
 type User {
   id: String!
   email: String!
-  name: String!
+  name: String
   confirmed: Boolean!
   is_host: Boolean!
 }
