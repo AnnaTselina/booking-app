@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { GraphQLError } from "graphql";
 import { codes } from "src/error-handling/format-error-graphql";
 import { Repository } from "typeorm";
+import { BookingService } from "../booking/booking.service";
 import { RentalUnit } from "../rental-unit/entities/rental-unit.entity";
 import { User } from "../user/dto/entities/user.entity";
 import { UserService } from "../user/user.service";
@@ -19,10 +20,14 @@ export class HostService {
     private hostRentalUnitsRepository: Repository<HostRentalUnits>,
 
     @Inject("USER_SERVICE") private readonly userService: UserService,
+    private readonly bookingService: BookingService,
   ) {}
 
-  async getHostByUserId(user: User) {
-    const host = await this.hostRepository.findOneBy({ user });
+  async getHostByUserId(userId: string) {
+    const host = await this.hostRepository
+      .createQueryBuilder("host")
+      .where({ user: userId })
+      .getOne();
     return host || null;
   }
 
@@ -48,7 +53,7 @@ export class HostService {
       });
     }
 
-    let host = await this.getHostByUserId(user);
+    let host = await this.getHostByUserId(user.id);
 
     if (!host) {
       host = await this.addNewHost(user);
@@ -61,5 +66,37 @@ export class HostService {
     });
 
     await this.hostRentalUnitsRepository.save(hostRentalUnit);
+  }
+
+  async getHostRentalUnits(hostId: string) {
+    return await this.hostRentalUnitsRepository
+      .createQueryBuilder("host-rental-units")
+      .innerJoin("host-rental-units.host", "host")
+      .innerJoin("host-rental-units.rental_unit", "rental-unit")
+      .where({ host: hostId })
+      .select([
+        "host-rental-units",
+        "host-rental-units.host",
+        "host",
+        "host-rental-units.rental_unit",
+        "rental-unit",
+      ])
+      .getMany();
+  }
+
+  async getHostBookingsByUserId(userId: string) {
+    const host = await this.getHostByUserId(userId);
+
+    const hostRentalUnits = await this.getHostRentalUnits(host!.id);
+
+    const rentalUnitsIds = hostRentalUnits.map(
+      (hostRentalUnit) => hostRentalUnit.rental_unit?.id,
+    );
+
+    const bookings = await this.bookingService.getBookingsOfRentalUnits(
+      rentalUnitsIds,
+    );
+
+    return bookings;
   }
 }

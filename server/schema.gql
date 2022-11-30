@@ -124,6 +124,7 @@ type Query {
   getStates(id: String!): [State!]!
   getRentalUnitAvailability(id: String!): [GetRentalUnitAvailabilityResponse!]!
   checkIfRentalUnitAvailable(rentalUnitAvailabilityInput: RentalUnitAvailabilityInput!): Boolean!
+  getHostBookings: [Booking!]!
   getUser: User!
 }
 

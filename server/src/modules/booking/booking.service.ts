@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Between, LessThan, MoreThan, Not, Repository } from "typeorm";
+import { Between, In, LessThan, MoreThan, Not, Repository } from "typeorm";
 import { Guest } from "../guest/entities/guest.entity";
 import { RentalUnit } from "../rental-unit/entities/rental-unit.entity";
 import { Booking } from "./entities/booking.entity";
@@ -103,5 +103,13 @@ export class BookingService {
       .getOne();
 
     return !result;
+  }
+
+  async getBookingsOfRentalUnits(rentalUnits: string[]) {
+    return await this.bookingRepository.find({
+      where: {
+        rental_unit: In(rentalUnits),
+      },
+    });
   }
 }

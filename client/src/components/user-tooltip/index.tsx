@@ -24,8 +24,8 @@ const UserTooltip = () => {
       <ul className="tooltip__action">
         <li className="tooltip__action-item">
           {data.getUser.is_host && (
-            <NavLink to={routes.BOOKING_REQUESTS} className="medium">
-              Incoming booking requests
+            <NavLink to={routes.HOST_BOOKINGS} className="medium">
+              Bookings
             </NavLink>
           )}
         </li>

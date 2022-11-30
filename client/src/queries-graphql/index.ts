@@ -248,3 +248,15 @@ export const CHECK_RENTAL_UNIT_AVAILABILITY = gql`
     )
   }
 `;
+
+export const GET_HOST_BOOKINGS = gql`
+  query {
+    getHostBookings {
+      id
+      status
+      total_price
+      start_date
+      end_date
+    }
+  }
+`;
