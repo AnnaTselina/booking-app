@@ -143,6 +143,7 @@ input RentalUnitAvailabilityInput {
 type Mutation {
   reserveRentalUnit(reserveRentalUnitInput: ReserveRentalUnitInput!): Booking!
   addRentalUnit(addRentalUnitInput: AddRentalUnitInput!): Boolean!
+  acceptIncomingBooking(bookingId: String!): Booking!
   signUp(signUpInput: SignUpInput!): Boolean!
   confirmUser(id: String!): Boolean!
   login(loginInput: LoginInput!): User!

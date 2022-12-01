@@ -1,15 +1,16 @@
-declare namespace NodeJS {
-  interface ProcessEnv {
-    DB: "postgres";
-    DB_PORT: number;
-  }
-}
+import { IUser } from "src/types";
 
-declare namespace Express {
-  export interface Request {
-    user?: {
-      id: string;
-      email: string;
-    };
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      DB: "postgres";
+      DB_PORT: number;
+    }
+  }
+
+  namespace Express {
+    export interface Request {
+      user?: IUser;
+    }
   }
 }

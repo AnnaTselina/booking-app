@@ -7,7 +7,7 @@
   &__card {
     display: flex;
     border-bottom: 1px solid $colorGrey;
-    font-family: messina_sans;
+    font-family: $font2;
     padding: 14px;
 
     &-image {
@@ -29,6 +29,26 @@
             text-decoration: underline;
           }
         }
+      }
+    }
+
+    &-actions {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      button {
+        background-color: rgba(173, 221, 202, 0.271);
+        border: none;
+        cursor: pointer;
+        font-family: $font2;
+        padding: 9px 24px;
+        min-width: 110px;
+      }
+
+      .error {
+        position: absolute;
+        top: calc(50% + 24px);
       }
     }
   }

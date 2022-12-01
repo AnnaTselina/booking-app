@@ -59,9 +59,12 @@ export interface IUser {
   id: string;
   email: string;
   name?: string;
-  password_hash: string;
   confirmed: boolean;
   is_host: boolean;
+}
+
+export interface IUserPassword extends IUser {
+  password_hash: string;
 }
 
 export interface IGuest {

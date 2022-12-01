@@ -141,6 +141,10 @@ button {
 
 p {
   margin-bottom: 8px;
+
+  &.error {
+    color: $errorColor;
+  }
 }
 
 button {

@@ -4,7 +4,7 @@
   &-box {
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     padding: 15px;
-    font-family: "messina_sans";
+    font-family: $font2;
 
     .clear-button {
       background-color: transparent;
@@ -12,7 +12,7 @@
       outline: none;
       cursor: pointer;
       color: $darkGrey;
-      font-family: "messina_sans";
+      font-family: $font2;
       margin-right: 14px;
       margin-left: calc(100% - 44px);
     }
@@ -34,7 +34,7 @@
         width: 100%;
         box-sizing: border-box;
         border-radius: 2px;
-        font-family: "messina_sans";
+        font-family: $font2;
         text-align: center;
         font-size: 16px;
       }
@@ -45,7 +45,7 @@
       background-color: $secondaryButtonColor;
       border: none;
       outline: none;
-      font-family: "messina_sans";
+      font-family: $font2;
       margin-top: 28px;
       font-size: 20px;
       padding: 14px 0;

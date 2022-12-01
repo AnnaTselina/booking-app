@@ -1,12 +1,21 @@
-import { useQuery } from "@apollo/client";
-import { GET_HOST_BOOKINGS } from "../../queries-graphql";
-import { SERVER_ROUTE } from "../../utils/constants";
+import { useMutation, useQuery } from "@apollo/client";
+import { ACCEPT_BOOKING_MUTATION, GET_HOST_BOOKINGS } from "../../queries-graphql";
+import { BOOKING_STATUSES, SERVER_ROUTE } from "../../utils/constants";
 import { parseDateToStringWithMonthName } from "../../utils/helpers/parse-dates";
 import { IBooking } from "../../utils/types";
 import "./styles.scss";
 
 const HostBookingsList = () => {
   const { data } = useQuery(GET_HOST_BOOKINGS);
+  const [acceptBooking, { loading, error }] = useMutation(ACCEPT_BOOKING_MUTATION);
+
+  const handleAccept = (bookingId: string) => {
+    acceptBooking({
+      variables: {
+        id: bookingId,
+      },
+    });
+  };
 
   return (
     <div className="host-booking-list__container">
@@ -40,6 +49,22 @@ const HostBookingsList = () => {
                     </tr>
                   </tbody>
                 </table>
+              </div>
+              <div className="host-booking-list__card-actions">
+                {booking.status === BOOKING_STATUSES.request && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleAccept(booking.id);
+                      }}
+                    >
+                      {loading ? <span className="icon-loading" /> : "ACCEPT"}
+                    </button>
+
+                    <p className="error small">{error ? error.message : ""}</p>
+                  </>
+                )}
               </div>
             </div>
           ))}

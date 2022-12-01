@@ -1,7 +1,10 @@
-import { Args, Query, Resolver } from "@nestjs/graphql";
+import { UseGuards } from "@nestjs/common";
+import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { LoggedInGuard } from "src/guards/logged-in.guard";
 import { BookingService } from "./booking.service";
 import { RentalUnitAvailabilityInput } from "./dto/inputs";
 import { GetRentalUnitAvailabilityResponse } from "./dto/responses";
+import { Booking } from "./entities/booking.entity";
 
 @Resolver()
 export class BookingResolver {
@@ -29,5 +32,17 @@ export class BookingResolver {
     );
 
     return result;
+  }
+
+  @Mutation(() => Booking)
+  @UseGuards(LoggedInGuard)
+  async acceptIncomingBooking(
+    @Args("bookingId") id: string,
+    @Context() context: { req: Express.Request },
+  ) {
+    return await this.bookingService.acceptIncomingBooking(
+      context.req.user!,
+      id,
+    );
   }
 }

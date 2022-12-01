@@ -275,3 +275,12 @@ export const GET_HOST_BOOKINGS = gql`
     }
   }
 `;
+
+export const ACCEPT_BOOKING_MUTATION = gql`
+  mutation AcceptBooking($id: String!) {
+    acceptIncomingBooking(bookingId: $id) {
+      id
+      status
+    }
+  }
+`;

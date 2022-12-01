@@ -60,7 +60,6 @@ export interface IUser {
   id: string;
   email: string;
   name: string;
-  password_hash: string;
   confirmed: boolean;
   is_host: boolean;
 }
