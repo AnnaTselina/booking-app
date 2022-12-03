@@ -4,13 +4,13 @@ import { useLocation } from "react-router-dom";
 const useParseSearchParams = () => {
   const [params, setParams] = useState<null | URLSearchParams>(null);
 
-  const { search } = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
-    if (search) {
-      setParams(new URLSearchParams(search));
+    if (location) {
+      setParams(new URLSearchParams(location.search));
     }
-  }, [search]);
+  }, [location]);
 
   return params;
 };

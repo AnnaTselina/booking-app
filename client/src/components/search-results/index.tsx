@@ -18,16 +18,16 @@ const SearchResults = (props: ISearchResults) => {
         </div>
       )}
 
-      {results && (
-        <>
+      {results &&
+        (results.length ? (
           <div className="search-results-cards">
             {results.map((rentalUnit: IRentalUnit) => (
               <SearchCard rentalUnit={rentalUnit} key={rentalUnit.id} />
             ))}
           </div>
-          <div />
-        </>
-      )}
+        ) : (
+          <div className="content-centered">No search results</div>
+        ))}
     </div>
   );
 };

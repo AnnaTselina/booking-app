@@ -33,4 +33,8 @@ export const parseDateToStringWithMonthName = (date: Date | string) => {
   return `${day} ${MonthNames[month]}, ${dateTyped.getFullYear()}`;
 };
 
-export const parseStringToDate = () => {};
+export const parseStringToDate = (date: string) => {
+  const parsedDate = new Date(date);
+  parsedDate.setHours(0, 0, 0);
+  return parsedDate;
+};

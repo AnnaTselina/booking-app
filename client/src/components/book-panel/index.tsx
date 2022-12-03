@@ -22,17 +22,15 @@ const BookPanel = (props: IBookPanel) => {
 
   const userId = useReactiveVar(userVar);
 
-  const [dates, setDates] = useState<{ checkIn: Date | null; checkOut: Date | null }>({
-    checkIn: null,
-    checkOut: null,
-  });
+  const [checkIn, setCheckIn] = useState<null | Date>(null);
+  const [checkOut, setCheckOut] = useState<null | Date>(null);
 
   const [numGuests, setNumGuests] = useState(1);
   const [authenticationActive, setAuthenticationActive] = useState(false);
 
   const navigate = useNavigate();
 
-  const totalNights = useMemo(() => getTotalNights(dates), [dates]);
+  const totalNights = useMemo(() => getTotalNights({ checkIn, checkOut }), [checkIn, checkOut]);
 
   const totalPrice = useMemo(
     () => getTotalPrice(totalNights, pricePerNight),
@@ -55,13 +53,13 @@ const BookPanel = (props: IBookPanel) => {
     e.preventDefault();
 
     if (userId) {
-      if (dates.checkIn && dates.checkOut && numGuests && totalNights && totalPrice) {
+      if (checkIn && checkOut && numGuests && totalNights && totalPrice) {
         navigate(
           `${
             routes.RESERVE
           }?rental-unit=${idRentalUnit}&guests=${numGuests}&start=${parseDateToString(
-            dates.checkIn,
-          )}&end=${parseDateToString(dates.checkOut)}`,
+            checkIn,
+          )}&end=${parseDateToString(checkOut)}`,
         );
       }
     } else {
@@ -74,7 +72,10 @@ const BookPanel = (props: IBookPanel) => {
       <form onSubmit={reserve}>
         <div className="bookpanel-box">
           <DateRangePicker
-            setDatesCallback={setDates}
+            checkIn={checkIn}
+            checkOut={checkOut}
+            setCheckIn={setCheckIn}
+            setCheckOut={setCheckOut}
             clearButton
             inputWrapperClass="bookpanel-date-input"
             availability={availability}
@@ -100,7 +101,7 @@ const BookPanel = (props: IBookPanel) => {
           <button
             type="submit"
             className="bookpanel-box__submit"
-            disabled={!dates.checkIn || !dates.checkOut || !numGuests}
+            disabled={!checkIn || !checkOut || !numGuests}
             onClick={reserve}
           >
             Reserve

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import { useNavigate } from "react-router-dom";
 import routes from "../../utils/routes";
 import DateRangePicker from "../date-range-pickers";
-import { parseDateToString } from "../../utils/helpers/parse-dates";
+import { parseDateToString, parseStringToDate } from "../../utils/helpers/parse-dates";
+import useParseSearchParams from "../../utils/helpers/parse-search-params";
 
 interface SearchBarProps {
   className?: string;
@@ -11,14 +12,33 @@ interface SearchBarProps {
 
 const SearchBar = (props: SearchBarProps) => {
   const { className } = props;
-  const [dates, setDates] = useState<{ checkIn: Date | null; checkOut: Date | null }>({
-    checkIn: null,
-    checkOut: null,
-  });
+  const [checkIn, setCheckIn] = useState<null | Date>(null);
+  const [checkOut, setCheckOut] = useState<null | Date>(null);
 
   const [destination, setDestination] = useState("");
 
   const navigate = useNavigate();
+
+  const searchParams = useParseSearchParams();
+
+  useEffect(() => {
+    if (searchParams) {
+      const initialSearchParams = {
+        destination: searchParams.get("destination"),
+        checkIn: searchParams.get("checkin"),
+        checkOut: searchParams.get("checkout"),
+      };
+      if (initialSearchParams.destination) {
+        setDestination(initialSearchParams.destination);
+      }
+      if (initialSearchParams.checkIn) {
+        setCheckIn(parseStringToDate(initialSearchParams.checkIn));
+      }
+      if (initialSearchParams.checkOut) {
+        setCheckOut(parseStringToDate(initialSearchParams.checkOut));
+      }
+    }
+  }, [searchParams]);
 
   const handleSearch = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -27,10 +47,10 @@ const SearchBar = (props: SearchBarProps) => {
       route += `destination=${destination || ""}`;
     }
 
-    if (dates.checkIn && dates.checkOut) {
+    if (checkIn && checkOut) {
       route += `${destination ? "&" : ""}checkin=${parseDateToString(
-        dates.checkIn,
-      )}&checkout=${parseDateToString(dates.checkOut)}`;
+        checkIn,
+      )}&checkout=${parseDateToString(checkOut)}`;
     }
 
     navigate(route);
@@ -43,13 +63,19 @@ const SearchBar = (props: SearchBarProps) => {
         <input
           type="text"
           placeholder="Destination"
+          value={destination}
           onChange={(e) => {
             setDestination(e.target.value);
           }}
         />
       </div>
 
-      <DateRangePicker setDatesCallback={setDates} />
+      <DateRangePicker
+        checkIn={checkIn}
+        setCheckIn={setCheckIn}
+        checkOut={checkOut}
+        setCheckOut={setCheckOut}
+      />
 
       <div className="search-bar-item">
         <button type="button" onClick={handleSearch}>

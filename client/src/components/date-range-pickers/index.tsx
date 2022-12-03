@@ -1,22 +1,28 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./styles.scss";
 
 interface IDateRangePicker {
   inputWrapperClass?: string;
-  setDatesCallback?: React.Dispatch<
-    React.SetStateAction<{ checkIn: Date | null; checkOut: null | Date }>
-  >;
   clearButton?: boolean;
   availability?: { start_date: string; end_date: string }[];
+  checkIn: Date | null;
+  checkOut: Date | null;
+  setCheckIn: React.Dispatch<React.SetStateAction<Date | null>>;
+  setCheckOut: React.Dispatch<React.SetStateAction<Date | null>>;
 }
 
 const DateRangePicker = (props: IDateRangePicker) => {
-  const { inputWrapperClass, setDatesCallback, clearButton, availability } = props;
-
-  const [startDate, setStartDate] = useState<null | Date>(null);
-  const [endDate, setEndDate] = useState<null | Date>(null);
+  const {
+    inputWrapperClass,
+    clearButton,
+    availability,
+    checkIn,
+    checkOut,
+    setCheckIn,
+    setCheckOut,
+  } = props;
 
   const getNextDay = (date: Date) => {
     const dateCopy = new Date(date);
@@ -28,27 +34,18 @@ const DateRangePicker = (props: IDateRangePicker) => {
   const minCheckOutDate = useRef(getNextDay(new Date()));
 
   const handleCheckInDate = (date: Date) => {
-    setStartDate(date);
+    setCheckIn(date);
     minCheckOutDate.current = getNextDay(date);
-    if (setDatesCallback) {
-      setDatesCallback((state) => ({ ...state, checkIn: date }));
-    }
   };
 
   const handleCheckOutDate = (date: Date) => {
-    setEndDate(date);
-    if (setDatesCallback) {
-      setDatesCallback((state) => ({ ...state, checkOut: date }));
-    }
+    setCheckOut(date);
   };
 
   const handleClearButton = () => {
-    setStartDate(null);
-    setEndDate(null);
+    setCheckIn(null);
+    setCheckOut(null);
     minCheckOutDate.current = getNextDay(new Date());
-    if (setDatesCallback) {
-      setDatesCallback({ checkIn: null, checkOut: null });
-    }
   };
 
   const availabilityParsedForDatePicker = useMemo(() => {
@@ -76,11 +73,11 @@ const DateRangePicker = (props: IDateRangePicker) => {
           <span className="icon-calendar input-icon" />
           <DatePicker
             dateFormat="dd/MM/yyyy"
-            selected={startDate}
+            selected={checkIn}
             onChange={handleCheckInDate}
             selectsStart
-            startDate={startDate}
-            endDate={endDate}
+            startDate={checkIn}
+            endDate={checkOut}
             placeholderText="Check-in"
             calendarClassName="date-pickers-inputs"
             minDate={today.current}
@@ -92,11 +89,11 @@ const DateRangePicker = (props: IDateRangePicker) => {
           <span className="icon-calendar input-icon" />
           <DatePicker
             dateFormat="dd/MM/yyyy"
-            selected={endDate}
+            selected={checkOut}
             onChange={handleCheckOutDate}
             selectsEnd
-            startDate={startDate}
-            endDate={endDate}
+            startDate={checkIn}
+            endDate={checkOut}
             placeholderText="Check-out"
             calendarClassName="date-pickers-inputs"
             minDate={minCheckOutDate.current}
@@ -116,7 +113,6 @@ const DateRangePicker = (props: IDateRangePicker) => {
 
 DateRangePicker.defaultProps = {
   inputWrapperClass: "",
-  setDatesCallback: () => {},
   clearButton: false,
   availability: [],
 };

@@ -13,6 +13,12 @@
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   }
 
+  &.centered {
+    width: fit-content;
+    margin: 14px auto auto;
+    border: 1px solid $colorGrey;
+  }
+
   &-item {
     padding: 5px 20px;
     position: relative;

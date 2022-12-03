@@ -1,52 +1,44 @@
 import { useLazyQuery } from "@apollo/client";
-import { useEffect, useMemo, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import SearchBar from "../../components/search-bar";
 import SearchResults from "../../components/search-results";
 import { GET_RENTAL_UNITS } from "../../queries-graphql";
+import useParseSearchParams from "../../utils/helpers/parse-search-params";
 
 const SearchPageContainer = () => {
   const [getRentalUnits, { loading, data }] = useLazyQuery(GET_RENTAL_UNITS);
 
-  const searchString = useRef<null | string>(null);
-
-  const location = useLocation();
+  const searchParams = useParseSearchParams();
 
   useEffect(() => {
-    if (location) {
-      const { search } = location;
-      if (search !== searchString.current) {
-        searchString.current = search;
+    const variables: { [key: string]: string } = {};
 
-        const params = new URLSearchParams(search);
-        const destination = params.get("destination");
-        const checkIn = params.get("checkin");
-        const checkOut = params.get("checkout");
-        const variables: { [key: string]: string } = {};
+    if (searchParams) {
+      const destination = searchParams.get("destination");
+      const checkIn = searchParams.get("checkin");
+      const checkOut = searchParams.get("checkout");
 
-        if (destination) {
-          variables.destination = destination;
-        }
+      if (destination) {
+        variables.destination = destination;
+      }
 
-        if (checkIn && checkOut) {
-          variables.checkin = checkIn;
-          variables.checkout = checkOut;
-        }
-
-        getRentalUnits({
-          variables,
-        });
+      if (checkIn && checkOut) {
+        variables.checkin = checkIn;
+        variables.checkout = checkOut;
       }
     }
-  }, [location]);
 
-  const searchResults = useMemo(() => {
-    if (data?.getRentalUnits) {
-      return data.getRentalUnits;
-    }
-    return null;
-  }, [data]);
+    getRentalUnits({
+      variables,
+    });
+  }, [searchParams]);
 
-  return <SearchResults loading={loading} results={searchResults} />;
+  return (
+    <>
+      <SearchBar className="centered" />
+      <SearchResults loading={loading} results={data?.getRentalUnits} />
+    </>
+  );
 };
 
 export default SearchPageContainer;
