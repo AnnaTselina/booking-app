@@ -53,10 +53,17 @@ const DateRangePicker = (props: IDateRangePicker) => {
 
   const availabilityParsedForDatePicker = useMemo(() => {
     if (availability) {
-      return availability.map((range) => ({
-        start: new Date(`${range.start_date}T00:00:00`),
-        end: new Date(`${range.end_date}T00:00:00`),
-      }));
+      return availability.map((range) => {
+        const start = new Date(Number(range.start_date));
+        start.setHours(0, 0, 0);
+        const end = new Date(Number(range.end_date));
+        end.setHours(0, 0, 0);
+
+        return {
+          start,
+          end,
+        };
+      });
     }
 
     return [];
