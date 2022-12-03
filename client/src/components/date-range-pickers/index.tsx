@@ -5,7 +5,6 @@ import "./styles.scss";
 
 interface IDateRangePicker {
   inputWrapperClass?: string;
-  clearButton?: boolean;
   availability?: { start_date: string; end_date: string }[];
   checkIn: Date | null;
   checkOut: Date | null;
@@ -14,15 +13,7 @@ interface IDateRangePicker {
 }
 
 const DateRangePicker = (props: IDateRangePicker) => {
-  const {
-    inputWrapperClass,
-    clearButton,
-    availability,
-    checkIn,
-    checkOut,
-    setCheckIn,
-    setCheckOut,
-  } = props;
+  const { inputWrapperClass, availability, checkIn, checkOut, setCheckIn, setCheckOut } = props;
 
   const getNextDay = (date: Date) => {
     const dateCopy = new Date(date);
@@ -40,12 +31,6 @@ const DateRangePicker = (props: IDateRangePicker) => {
 
   const handleCheckOutDate = (date: Date) => {
     setCheckOut(date);
-  };
-
-  const handleClearButton = () => {
-    setCheckIn(null);
-    setCheckOut(null);
-    minCheckOutDate.current = getNextDay(new Date());
   };
 
   const availabilityParsedForDatePicker = useMemo(() => {
@@ -67,53 +52,71 @@ const DateRangePicker = (props: IDateRangePicker) => {
   }, [availability]);
 
   return (
-    <>
-      <div className="date-pickers-wrapper">
-        <div className={`date-pickers-item ${inputWrapperClass}`}>
-          <span className="icon-calendar input-icon" />
-          <DatePicker
-            dateFormat="dd/MM/yyyy"
-            selected={checkIn}
-            onChange={handleCheckInDate}
-            selectsStart
-            startDate={checkIn}
-            endDate={checkOut}
-            placeholderText="Check-in"
-            calendarClassName="date-pickers-inputs"
-            minDate={today.current}
-            excludeDateIntervals={availabilityParsedForDatePicker}
-          />
-        </div>
-
-        <div className={`date-pickers-item ${inputWrapperClass}`}>
-          <span className="icon-calendar input-icon" />
-          <DatePicker
-            dateFormat="dd/MM/yyyy"
-            selected={checkOut}
-            onChange={handleCheckOutDate}
-            selectsEnd
-            startDate={checkIn}
-            endDate={checkOut}
-            placeholderText="Check-out"
-            calendarClassName="date-pickers-inputs"
-            minDate={minCheckOutDate.current}
-            excludeDateIntervals={availabilityParsedForDatePicker}
-          />
+    <div className="date-pickers-wrapper">
+      <div className={`date-pickers-item ${inputWrapperClass}`}>
+        <span className="icon-calendar input-icon" />
+        <DatePicker
+          dateFormat="dd/MM/yyyy"
+          selected={checkIn}
+          onChange={handleCheckInDate}
+          selectsStart
+          startDate={checkIn}
+          endDate={checkOut}
+          placeholderText="Check-in"
+          calendarClassName="date-pickers-inputs"
+          minDate={today.current}
+          excludeDateIntervals={availabilityParsedForDatePicker}
+        />
+        <div className="date-pickers-item__clear">
+          {!!checkIn && (
+            <button
+              type="button"
+              className="link"
+              onClick={() => {
+                setCheckIn(null);
+                minCheckOutDate.current = getNextDay(new Date());
+              }}
+            >
+              <span className="icon-cancel" />
+            </button>
+          )}
         </div>
       </div>
 
-      {clearButton && (
-        <button type="button" className="clear-button" onClick={handleClearButton}>
-          Clear
-        </button>
-      )}
-    </>
+      <div className={`date-pickers-item ${inputWrapperClass}`}>
+        <span className="icon-calendar input-icon" />
+        <DatePicker
+          dateFormat="dd/MM/yyyy"
+          selected={checkOut}
+          onChange={handleCheckOutDate}
+          selectsEnd
+          startDate={checkIn}
+          endDate={checkOut}
+          placeholderText="Check-out"
+          calendarClassName="date-pickers-inputs"
+          minDate={minCheckOutDate.current}
+          excludeDateIntervals={availabilityParsedForDatePicker}
+        />
+        <div className="date-pickers-item__clear">
+          {!!checkOut && (
+            <button
+              type="button"
+              className="link"
+              onClick={() => {
+                setCheckOut(null);
+              }}
+            >
+              <span className="icon-cancel" />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
 DateRangePicker.defaultProps = {
   inputWrapperClass: "",
-  clearButton: false,
   availability: [],
 };
 

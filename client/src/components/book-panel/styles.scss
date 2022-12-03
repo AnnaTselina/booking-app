@@ -18,7 +18,7 @@
     }
 
     &__num-guests {
-      margin-bottom: 12px;
+      margin: 24px 0;
 
       label {
         display: block;
@@ -58,10 +58,6 @@
   }
 
   &-date-input {
-    padding: 0;
-
-    > .input-icon {
-      transform: translate(25px, 5px);
-    }
+    padding: 0 14px 0 0;
   }
 }

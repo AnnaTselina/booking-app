@@ -8,9 +8,18 @@
   &-item {
     padding: 5px 20px;
     position: relative;
+    display: flex;
+    align-items: center;
 
     &:not(:last-of-type) {
       border-right: 1px solid $colorGrey;
+    }
+
+    &__clear {
+      width: 17px;
+      button {
+        padding: 7px 0;
+      }
     }
 
     input {
@@ -25,18 +34,10 @@
       width: 110px;
     }
 
-    > button {
-      padding: 9px 24px;
-      background-color: $secondaryButtonColor;
-      border: none;
-      font-family: $font2;
-      cursor: pointer;
-    }
-
     .input-icon {
       position: absolute;
       z-index: 1;
-      transform: translate(8px, 5px);
+      transform: translate(15px, -2px);
       opacity: 0.6;
     }
   }

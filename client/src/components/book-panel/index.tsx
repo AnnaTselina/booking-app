@@ -76,7 +76,6 @@ const BookPanel = (props: IBookPanel) => {
             checkOut={checkOut}
             setCheckIn={setCheckIn}
             setCheckOut={setCheckOut}
-            clearButton
             inputWrapperClass="bookpanel-date-input"
             availability={availability}
           />
