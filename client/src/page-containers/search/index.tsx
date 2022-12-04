@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect } from "react";
-import SearchBar from "../../components/search-bar";
+import SearchParameters from "../../components/search-parameters";
 import SearchResults from "../../components/search-results";
 import { GET_RENTAL_UNITS } from "../../queries-graphql";
 import useParseSearchParams from "../../utils/helpers/parse-search-params";
@@ -35,7 +35,7 @@ const SearchPageContainer = () => {
 
   return (
     <>
-      <SearchBar className="centered" />
+      <SearchParameters />
       <SearchResults loading={loading} results={data?.getRentalUnits} />
     </>
   );

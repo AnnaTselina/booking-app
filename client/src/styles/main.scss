@@ -71,6 +71,18 @@ body {
   }
 }
 
+.icon-hamburger {
+  &:before {
+    content: $icon-hamburger;
+  }
+}
+
+.icon-before {
+  &:before {
+    margin-right: 8px;
+  }
+}
+
 .icon-loading {
   animation: spinner 1.1s linear infinite;
   border: 0.3em solid hsla(0deg, 0%, 6%, 0.2);

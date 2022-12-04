@@ -7,13 +7,14 @@ interface IModal {
   isOpen: boolean;
   handleClose: () => void;
   heading?: string;
+  style?: object;
 }
 
 interface KeyboardEvent {
   key: string;
 }
 
-const Modal = ({ children, isOpen, handleClose, heading }: IModal) => {
+const Modal = ({ children, isOpen, handleClose, heading, style }: IModal) => {
   useEffect(() => {
     const closeOnEscapeKey = (e: KeyboardEvent) => (e.key === "Escape" ? handleClose() : null);
     document.body.addEventListener("keydown", closeOnEscapeKey);
@@ -27,7 +28,7 @@ const Modal = ({ children, isOpen, handleClose, heading }: IModal) => {
   return (
     <Portal wrapperId="portal-modal-container">
       <div className="modal">
-        <div className="modal-content">
+        <div className="modal-content" style={style}>
           <div className="modal-content-heading">
             <h3>{heading}</h3>
             <button type="button" onClick={handleClose} className="link">
@@ -44,6 +45,7 @@ const Modal = ({ children, isOpen, handleClose, heading }: IModal) => {
 
 Modal.defaultProps = {
   heading: "",
+  style: {},
 };
 
 export default Modal;
