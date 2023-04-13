@@ -1,4 +1,4 @@
-import React, { useState, useMemo, Suspense } from "react";
+import React, { useState, useMemo, useReducer, Suspense } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_ADD_RENTAL_UNIT_DATA } from "../../queries-graphql";
 import redHouseImage from "../../assets/images/red-house.jpg";
@@ -9,7 +9,7 @@ import houseAddressImage from "../../assets/images/house-address.jpg";
 import pinkHousesImage from "../../assets/images/pink-house.jpg";
 import housePolaroid from "../../assets/images/house-polaroid.jpg";
 import beachSeaside from "../../assets/images/beach-seaside.jpg";
-import { ICardProps, IPayload } from "./types";
+import { ICardProps, State, Action, ActionType } from "./types";
 import "./styles.scss";
 
 const StartingCard = React.lazy(() => import("./cards/starting-card"));
@@ -62,60 +62,76 @@ const stages: {
   },
 };
 
+const initialState = {
+  type_of_place_id: { value: "", set: false },
+  max_guests: { value: 0, set: false },
+  num_bedrooms: { value: 0, set: false },
+  num_beds: { value: 0, set: false },
+  num_bathrooms: { value: 0, set: false },
+  amenities_ids: { value: [""], set: true },
+  address: {
+    id_country: {
+      value: "",
+      set: false,
+    },
+    id_state: {
+      value: "",
+      set: false,
+    },
+    city: {
+      value: "",
+      set: false,
+    },
+    street: {
+      value: "",
+      set: false,
+    },
+    zip: {
+      value: "",
+      set: false,
+    },
+    apartment: {
+      value: "",
+      set: true,
+    },
+  },
+  title: {
+    value: "",
+    set: false,
+  },
+  description: {
+    value: "",
+    set: false,
+  },
+  price: {
+    value: 0,
+    set: false,
+  },
+  images: {
+    value: [],
+    set: false,
+  },
+};
+
+const reducer = (state: State, action: Action): State => {
+  if (action.type === ActionType.ADDRESS) {
+    return {
+      ...state,
+      [action.type]: { ...state[action.type], ...action.payload },
+    };
+  }
+  return {
+    ...state,
+    [action.type]: { value: action.payload.value, set: action.payload.set },
+  };
+};
+
 const AddRentalUnit = () => {
   const stagesNames = Object.keys(stages);
 
   const [currentSectionIndex, setCurrentSectionIndex] = useState<number>(0);
-  const [payload, setPayload] = useState<IPayload>({
-    type_of_place_id: { value: "", set: false },
-    max_guests: { value: 0, set: false },
-    num_bedrooms: { value: 0, set: false },
-    num_beds: { value: 0, set: false },
-    num_bathrooms: { value: 0, set: false },
-    amenities_ids: { value: [""], set: true },
-    address: {
-      id_country: {
-        value: "",
-        set: false,
-      },
-      id_state: {
-        value: "",
-        set: false,
-      },
-      city: {
-        value: "",
-        set: false,
-      },
-      street: {
-        value: "",
-        set: false,
-      },
-      zip: {
-        value: "",
-        set: false,
-      },
-      apartment: {
-        value: "",
-        set: true,
-      },
-    },
-    title: {
-      value: "",
-      set: false,
-    },
-    description: {
-      value: "",
-      set: false,
-    },
-    price: {
-      value: 0,
-      set: false,
-    },
-    images: {
-      value: [],
-      set: false,
-    },
-  });
+
+  const [payload, dispatch] = useReducer(reducer, initialState);
 
   const CurrentCard = useMemo(
     () => stages[stagesNames[currentSectionIndex]].element,
@@ -142,7 +158,7 @@ const AddRentalUnit = () => {
           <CurrentCard
             nextStepCallback={moveToNextCard}
             previousStepCallback={moveToPreviousCard}
-            setPayload={setPayload}
+            dispatch={dispatch}
             payload={payload}
           />
         </div>

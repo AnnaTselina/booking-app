@@ -1,9 +1,9 @@
-import { ICardProps } from "../../types";
+import { ICardProps, ActionType } from "../../types";
 
 const cardHeading = "We would like to know about your place in numbers.";
 
 const RentalUnitInNumbersCard = (props: ICardProps) => {
-  const { nextStepCallback, previousStepCallback, setPayload, payload } = props;
+  const { nextStepCallback, previousStepCallback, dispatch, payload } = props;
 
   return (
     <div className="add-rental-unit__content-box-form">
@@ -16,10 +16,10 @@ const RentalUnitInNumbersCard = (props: ICardProps) => {
           id="number_of_guests"
           min="0"
           onChange={(e) => {
-            setPayload((state) => ({
-              ...state,
-              max_guests: { value: Number(e.target.value), set: true },
-            }));
+            dispatch({
+              type: ActionType.MAX_GUESTS,
+              payload: { value: Number(e.target.value), set: true },
+            });
           }}
           value={payload.max_guests.set ? payload.max_guests.value : ""}
         />
@@ -32,10 +32,10 @@ const RentalUnitInNumbersCard = (props: ICardProps) => {
           id="number_of_bedrooms"
           min="0"
           onChange={(e) => {
-            setPayload((state) => ({
-              ...state,
-              num_bedrooms: { value: Number(e.target.value), set: true },
-            }));
+            dispatch({
+              type: ActionType.NUM_BEDROOMS,
+              payload: { value: Number(e.target.value), set: true },
+            });
           }}
           value={payload.num_bedrooms.set ? payload.num_bedrooms.value : ""}
         />
@@ -48,10 +48,10 @@ const RentalUnitInNumbersCard = (props: ICardProps) => {
           id="number_of_beds"
           min="0"
           onChange={(e) => {
-            setPayload((state) => ({
-              ...state,
-              num_beds: { value: Number(e.target.value), set: true },
-            }));
+            dispatch({
+              type: ActionType.NUM_BEDS,
+              payload: { value: Number(e.target.value), set: true },
+            });
           }}
           value={payload.num_beds.set ? payload.num_beds.value : ""}
         />
@@ -64,10 +64,10 @@ const RentalUnitInNumbersCard = (props: ICardProps) => {
           id="number_of_bathrooms"
           min="0"
           onChange={(e) => {
-            setPayload((state) => ({
-              ...state,
-              num_bathrooms: { value: Number(e.target.value), set: true },
-            }));
+            dispatch({
+              type: ActionType.NUM_BATHROOMS,
+              payload: { value: Number(e.target.value), set: true },
+            });
           }}
           value={payload.num_bathrooms.set ? payload.num_bathrooms.value : ""}
         />

@@ -1,28 +1,27 @@
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { GET_COUNTRIES, GET_STATES } from "../../../../queries-graphql";
 import { ICountry, IState } from "../../../../utils/types";
-import { ICardProps } from "../../types";
+import { ICardProps, ActionType } from "../../types";
 
 const heading = "Let us know where it is located";
 
 const AddressCard = (props: ICardProps) => {
-  const { nextStepCallback, previousStepCallback, setPayload, payload } = props;
+  const { nextStepCallback, previousStepCallback, dispatch, payload } = props;
 
   const { data: dataCountries } = useQuery(GET_COUNTRIES);
 
   const [getStates, { data: dataStates }] = useLazyQuery(GET_STATES);
 
   const handleCountryChange = (id: string) => {
-    setPayload((state) => ({
-      ...state,
-      address: {
-        ...state.address,
+    dispatch({
+      type: ActionType.ADDRESS,
+      payload: {
         id_country: {
           value: id,
           set: !!id.length,
         },
       },
-    }));
+    });
 
     getStates({
       variables: {
@@ -30,25 +29,26 @@ const AddressCard = (props: ICardProps) => {
       },
     }).then((result) => {
       if (result?.data?.getStates) {
-        setPayload((state) => ({
-          ...state,
-          address: {
-            ...state.address,
+        dispatch({
+          type: ActionType.ADDRESS,
+          payload: {
             id_state: {
               value: "",
               set: !result?.data?.getStates?.length,
             },
           },
-        }));
+        });
       }
     });
   };
 
   const handleStateChange = (id: string) => {
-    setPayload((state) => ({
-      ...state,
-      address: { ...state.address, id_state: { value: id, set: !!id.length } },
-    }));
+    dispatch({
+      type: ActionType.ADDRESS,
+      payload: {
+        id_state: { value: id, set: !!id.length },
+      },
+    });
   };
 
   return (
@@ -100,16 +100,15 @@ const AddressCard = (props: ICardProps) => {
               type="text"
               id="city"
               onChange={(e) => {
-                setPayload((state) => ({
-                  ...state,
-                  address: {
-                    ...state.address,
+                dispatch({
+                  type: ActionType.ADDRESS,
+                  payload: {
                     city: {
                       value: e.target.value,
                       set: !!e.target.value.length,
                     },
                   },
-                }));
+                });
               }}
               value={payload.address.city.value}
             />
@@ -121,16 +120,15 @@ const AddressCard = (props: ICardProps) => {
               type="text"
               id="street"
               onChange={(e) => {
-                setPayload((state) => ({
-                  ...state,
-                  address: {
-                    ...state.address,
+                dispatch({
+                  type: ActionType.ADDRESS,
+                  payload: {
                     street: {
                       value: e.target.value,
                       set: !!e.target.value.length,
                     },
                   },
-                }));
+                });
               }}
               value={payload.address.street.value}
             />
@@ -142,16 +140,15 @@ const AddressCard = (props: ICardProps) => {
               type="text"
               id="zip"
               onChange={(e) => {
-                setPayload((state) => ({
-                  ...state,
-                  address: {
-                    ...state.address,
+                dispatch({
+                  type: ActionType.ADDRESS,
+                  payload: {
                     zip: {
                       value: e.target.value,
                       set: !!e.target.value.length,
                     },
                   },
-                }));
+                });
               }}
               value={payload.address.zip.value}
             />
@@ -163,16 +160,15 @@ const AddressCard = (props: ICardProps) => {
               type="text"
               id="apartment"
               onChange={(e) => {
-                setPayload((state) => ({
-                  ...state,
-                  address: {
-                    ...state.address,
+                dispatch({
+                  type: ActionType.ADDRESS,
+                  payload: {
                     apartment: {
                       value: e.target.value,
                       set: true,
                     },
                   },
-                }));
+                });
               }}
               value={payload.address.apartment.value}
             />

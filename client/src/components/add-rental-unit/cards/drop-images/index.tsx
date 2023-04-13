@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { ICardProps } from "../../types";
+import { ICardProps, ActionType } from "../../types";
 
 const heading = "Finally, please add couple of images";
 
 const DropImages = (props: ICardProps) => {
-  const { nextStepCallback, previousStepCallback, setPayload, payload } = props;
+  const { nextStepCallback, previousStepCallback, dispatch, payload } = props;
 
   const [images, setImages] = useState<{ src: string }[]>([]);
 
@@ -14,10 +14,13 @@ const DropImages = (props: ICardProps) => {
       "image/*": [],
     },
     onDrop: (acceptedFiles) => {
-      setPayload((state) => ({
-        ...state,
-        images: { value: [...state.images.value, ...acceptedFiles], set: true },
-      }));
+      dispatch({
+        type: ActionType.IMAGES,
+        payload: {
+          value: [...payload.images.value, ...acceptedFiles],
+          set: true,
+        },
+      });
     },
   });
 
@@ -40,16 +43,15 @@ const DropImages = (props: ICardProps) => {
   }, [payload.images]);
 
   const cancelImage = (index: number) => {
-    setPayload((state) => {
-      state.images.value.splice(index, 1);
+    const updatedList = [...payload.images.value];
+    updatedList.splice(index, 1);
 
-      return {
-        ...state,
-        images: {
-          value: state.images.value,
-          set: !!state.images.value.length,
-        },
-      };
+    dispatch({
+      type: ActionType.IMAGES,
+      payload: {
+        value: updatedList,
+        set: !!updatedList.length,
+      },
     });
   };
 

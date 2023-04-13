@@ -1,9 +1,9 @@
-import { ICardProps } from "../../types";
+import { ICardProps, ActionType } from "../../types";
 
 const heading = "Most importantly, describe your place and enter price";
 
 const TitleAndPriceCard = (props: ICardProps) => {
-  const { nextStepCallback, previousStepCallback, setPayload, payload } = props;
+  const { nextStepCallback, previousStepCallback, dispatch, payload } = props;
 
   return (
     <div className="add-rental-unit__content-box-form">
@@ -17,13 +17,10 @@ const TitleAndPriceCard = (props: ICardProps) => {
           minLength={30}
           maxLength={60}
           onChange={(e) => {
-            setPayload((state) => ({
-              ...state,
-              title: {
-                value: e.target.value,
-                set: e.target.value.length >= 20,
-              },
-            }));
+            dispatch({
+              type: ActionType.TITLE,
+              payload: { value: e.target.value, set: e.target.value.length >= 20 },
+            });
           }}
           value={payload.title.value}
         />
@@ -40,13 +37,10 @@ const TitleAndPriceCard = (props: ICardProps) => {
           rows={7}
           maxLength={300}
           onChange={(e) => {
-            setPayload((state) => ({
-              ...state,
-              description: {
-                value: e.target.value,
-                set: e.target.value.length >= 150,
-              },
-            }));
+            dispatch({
+              type: ActionType.DESCRIPTION,
+              payload: { value: e.target.value, set: e.target.value.length >= 150 },
+            });
           }}
           value={payload.description.value}
         />
@@ -62,13 +56,13 @@ const TitleAndPriceCard = (props: ICardProps) => {
           type="number"
           id="price"
           onChange={(e) => {
-            setPayload((state) => ({
-              ...state,
-              price: {
+            dispatch({
+              type: ActionType.PRICE,
+              payload: {
                 value: Number(e.target.value),
                 set: !!e.target.value.length && !!Number(e.target.value),
               },
-            }));
+            });
           }}
           value={payload.price.value}
           min={0}

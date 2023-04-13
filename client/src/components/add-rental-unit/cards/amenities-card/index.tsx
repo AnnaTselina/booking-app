@@ -1,35 +1,34 @@
 import { useQuery } from "@apollo/client";
 import { GET_AMENITIES } from "../../../../queries-graphql";
 import { IAmenity } from "../../../../utils/types";
-import { ICardProps } from "../../types";
+import { ICardProps, ActionType } from "../../types";
 
 const heading = "Choose amenities in your apartment";
 
 const AmenitiesCard = (props: ICardProps) => {
-  const { nextStepCallback, previousStepCallback, setPayload, payload } = props;
+  const { nextStepCallback, previousStepCallback, dispatch, payload } = props;
 
   const { data } = useQuery(GET_AMENITIES);
 
   const toggleAmenity = (id: string) => {
-    setPayload((state) => {
-      const currentAmenitiesList = [...state.amenities_ids.value];
-      if (currentAmenitiesList.length === 1 && currentAmenitiesList[0] === "") {
-        currentAmenitiesList[0] = id;
-      } else {
-        const amenityInListIndex = currentAmenitiesList.indexOf(id);
-        if (amenityInListIndex === -1) {
-          currentAmenitiesList.push(id);
-        } else if (currentAmenitiesList.length === 1) {
-          currentAmenitiesList.splice(amenityInListIndex, 1, "");
-        } else {
-          currentAmenitiesList.splice(amenityInListIndex, 1);
-        }
-      }
+    const currentAmenitiesList = [...payload.amenities_ids.value];
 
-      return {
-        ...state,
-        amenities_ids: { value: currentAmenitiesList, set: true },
-      };
+    if (currentAmenitiesList.length === 1 && currentAmenitiesList[0] === "") {
+      currentAmenitiesList[0] = id;
+    } else {
+      const amenityInListIndex = currentAmenitiesList.indexOf(id);
+      if (amenityInListIndex === -1) {
+        currentAmenitiesList.push(id);
+      } else if (currentAmenitiesList.length === 1) {
+        currentAmenitiesList.splice(amenityInListIndex, 1, "");
+      } else {
+        currentAmenitiesList.splice(amenityInListIndex, 1);
+      }
+    }
+
+    dispatch({
+      type: ActionType.AMENITIES_IDS,
+      payload: { value: currentAmenitiesList, set: true },
     });
   };
 

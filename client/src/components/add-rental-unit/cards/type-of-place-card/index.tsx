@@ -2,12 +2,12 @@ import { useQuery } from "@apollo/client";
 import React from "react";
 import { GET_TYPES_OF_PLACES_QUERY } from "../../../../queries-graphql";
 import { ITypeOfPlace } from "../../../../utils/types";
-import { ICardProps } from "../../types";
+import { ICardProps, ActionType } from "../../types";
 
 const cardHeading = "What type of place is it?";
 
 const TypeOfPlaceCard = (props: ICardProps) => {
-  const { nextStepCallback, previousStepCallback, setPayload, payload } = props;
+  const { nextStepCallback, previousStepCallback, dispatch, payload } = props;
 
   const { data } = useQuery(GET_TYPES_OF_PLACES_QUERY);
 
@@ -24,10 +24,10 @@ const TypeOfPlaceCard = (props: ICardProps) => {
                   id={type.id}
                   name="type-of-place"
                   onChange={() => {
-                    setPayload((state) => ({
-                      ...state,
-                      type_of_place_id: { value: type.id, set: true },
-                    }));
+                    dispatch({
+                      type: ActionType.TYPE_OF_PLACE_ID,
+                      payload: { value: type.id, set: true },
+                    });
                   }}
                   checked={type.id === payload.type_of_place_id.value}
                 />

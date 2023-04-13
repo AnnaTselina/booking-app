@@ -1,6 +1,6 @@
-import React from "react";
+import { Dispatch } from "react";
 
-export interface IPayload {
+export type State = {
   type_of_place_id: { value: string; set: boolean };
   max_guests: { value: number; set: boolean };
   num_bedrooms: { value: number; set: boolean };
@@ -49,10 +49,33 @@ export interface IPayload {
     value: File[];
     set: boolean;
   };
+};
+
+/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-shadow
+export enum ActionType {
+  TYPE_OF_PLACE_ID = "type_of_place_id",
+  MAX_GUESTS = "max_guests",
+  NUM_BEDROOMS = "num_bedrooms",
+  NUM_BEDS = "num_beds",
+  NUM_BATHROOMS = "num_bathrooms",
+  AMENITIES_IDS = "amenities_ids",
+  ADDRESS = "address",
+  TITLE = "title",
+  DESCRIPTION = "description",
+  PRICE = "price",
+  IMAGES = "images",
 }
+
+export type Action = {
+  type: ActionType;
+  payload:
+    | { value: string | number | string[] | File[]; set: boolean }
+    | { [key: string]: { value: string; set: boolean } };
+};
 export interface ICardProps {
   nextStepCallback: () => void;
   previousStepCallback: () => void;
-  setPayload: React.Dispatch<React.SetStateAction<IPayload>>;
-  payload: IPayload;
+  dispatch: Dispatch<Action>;
+  payload: State;
 }
