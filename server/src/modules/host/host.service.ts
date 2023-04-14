@@ -9,6 +9,7 @@ import { User } from "../user/dto/entities/user.entity";
 import { UserService } from "../user/user.service";
 import { HostRentalUnits } from "./dto/entities/host-rental-units.entity";
 import { Host } from "./dto/entities/host.entity";
+import { HostBookingsInput } from "./dto/entities/inputs";
 
 @Injectable()
 export class HostService {
@@ -84,7 +85,11 @@ export class HostService {
       .getMany();
   }
 
-  async getHostBookingsByUserId(userId: string) {
+  async getHostBookingsByUserId(
+    userId: string,
+    bookingOptions: HostBookingsInput,
+  ) {
+    const { status } = bookingOptions;
     const host = await this.getHostByUserId(userId);
 
     const hostRentalUnits = await this.getHostRentalUnits(host!.id);
@@ -95,6 +100,7 @@ export class HostService {
 
     const bookings = await this.bookingService.getBookingsOfRentalUnits(
       rentalUnitsIds,
+      status,
     );
 
     return bookings;

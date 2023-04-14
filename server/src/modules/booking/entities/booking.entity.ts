@@ -4,6 +4,7 @@ import { GraphQLDateTime } from "graphql-scalars";
 import { RentalUnit } from "src/modules/rental-unit/entities/rental-unit.entity";
 import { Guest } from "src/modules/guest/entities/guest.entity";
 import { IBooking } from "src/types";
+import { BOOKING_STATUSES } from "../../../utils/constants";
 
 @Entity("booking")
 @ObjectType({})
@@ -24,7 +25,7 @@ export class Booking implements IBooking {
   @Field(() => GraphQLDateTime)
   end_date: Date;
 
-  @Column({ default: "request" })
+  @Column({ default: BOOKING_STATUSES.request })
   @Field()
   status: string;
 

@@ -250,8 +250,8 @@ export const CHECK_RENTAL_UNIT_AVAILABILITY = gql`
 `;
 
 export const GET_HOST_BOOKINGS = gql`
-  query {
-    getHostBookings {
+  query GetHostBokings($status: String) {
+    getHostBookings(hostBookingsInput: { status: $status }) {
       id
       status
       total_price

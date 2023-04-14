@@ -124,7 +124,7 @@ type Query {
   getStates(id: String!): [State!]!
   getRentalUnitAvailability(id: String!): [GetRentalUnitAvailabilityResponse!]!
   checkIfRentalUnitAvailable(rentalUnitAvailabilityInput: RentalUnitAvailabilityInput!): Boolean!
-  getHostBookings: [Booking!]!
+  getHostBookings(hostBookingsInput: HostBookingsInput!): [Booking!]!
   getUser: User!
 }
 
@@ -138,6 +138,10 @@ input RentalUnitAvailabilityInput {
   id_rental_unit: String!
   start_date: DateTime!
   end_date: DateTime!
+}
+
+input HostBookingsInput {
+  status: String
 }
 
 type Mutation {

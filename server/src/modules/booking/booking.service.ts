@@ -111,8 +111,8 @@ export class BookingService {
     return !result;
   }
 
-  async getBookingsOfRentalUnits(rentalUnits: string[]) {
-    const result = await this.bookingRepository
+  async getBookingsOfRentalUnits(rentalUnits: string[], status: string) {
+    const query = this.bookingRepository
       .createQueryBuilder("booking")
       .where({ rental_unit: In(rentalUnits) })
       .innerJoin("booking.rental_unit", "rental-unit")
@@ -123,17 +123,23 @@ export class BookingService {
         "rental-unit-image.rentalUnitId = rental-unit.id",
       )
       .innerJoin("booking.guest", "guest")
-      .leftJoinAndMapOne("guest.user", User, "user", "guest.userId = user.id")
-      .select([
-        "booking",
-        "booking.rental_unit",
-        "booking.guest",
-        "rental-unit",
-        "rental-unit-image",
-        "guest",
-        "user",
-      ])
-      .getMany();
+      .leftJoinAndMapOne("guest.user", User, "user", "guest.userId = user.id");
+
+    if (status) {
+      query.where("booking.status = :status", { status });
+    }
+
+    query.select([
+      "booking",
+      "booking.rental_unit",
+      "booking.guest",
+      "rental-unit",
+      "rental-unit-image",
+      "guest",
+      "user",
+    ]);
+
+    const result = await query.getMany();
 
     return result;
   }

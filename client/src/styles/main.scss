@@ -187,6 +187,10 @@ button {
   }
 }
 
+.accent {
+  color: $greenPrimaryColor;
+}
+
 @keyframes spinner {
   0% {
     transform: rotate(0deg);
